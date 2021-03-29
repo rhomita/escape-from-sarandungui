@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Soldier : MonoBehaviour
+public class Unit : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
 
@@ -13,6 +13,9 @@ public class Soldier : MonoBehaviour
     void Start()
     {
         _navMeshAgent = transform.GetComponent<NavMeshAgent>();
+        
+        // TODO TEMPORARY REMOVE:
+        PlayerUnitsManager.Instance.Register(this);
     }
 
     void Update()
