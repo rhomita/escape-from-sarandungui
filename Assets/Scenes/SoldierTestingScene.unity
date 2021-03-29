@@ -280,6 +280,7 @@ GameObject:
   - component: {fileID: 1687258582}
   - component: {fileID: 1687258586}
   - component: {fileID: 1687258583}
+  - component: {fileID: 1687258587}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -309,10 +310,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 30
   _borderSize: 15
-  _borderLimit: {x: 40, y: 30}
+  _borderLimit: {x: 40, y: 50}
   _scrollSpeed: 20
   _minHeight: 5
-  _maxHeight: 100
+  _maxHeight: 30
 --- !u!20 &1687258584
 Camera:
   m_ObjectHideFlags: 0
@@ -402,6 +403,19 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
+--- !u!114 &1687258587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1687258581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c05b98da96af274fa90e4263889d42f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  test: {fileID: 2056774565}
 --- !u!1001 &1962455918
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -530,7 +544,7 @@ NavMeshAgent:
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 200
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1

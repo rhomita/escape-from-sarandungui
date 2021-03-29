@@ -25,7 +25,7 @@ public class Soldier : MonoBehaviour
 
     public void MoveTo(Vector3 position)
     {
-        _navMeshAgent.Move(position);
+        _navMeshAgent.SetDestination(position);
     }
 
     public void SetShootTarget(Vector3 position)
