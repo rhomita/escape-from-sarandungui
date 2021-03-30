@@ -39,18 +39,7 @@ public class CameraController : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1))
         {
-            // Raycast to a point in the nav mesh.
-            Ray ray = _cam.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast (ray, out RaycastHit _hit, _raycastDistance))
-            {
-                Vector3 endPosition = _hit.point;
-                bool blocked = NavMesh.Raycast(transform.position, endPosition, out NavMeshHit hit, NavMesh.AllAreas);
-                if (blocked) return; // Cannot move there
-                foreach (Unit unit in _selectedUnits)
-                {
-                    unit.MoveTo(endPosition);
-                }
-            }    
+            OnRightClick();
         }
     }
 
@@ -87,14 +76,46 @@ public class CameraController : MonoBehaviour
             }
         }
         
-        
         Ray ray = _cam.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit _hit, _raycastDistance))
         {
             if (_hit.collider.TryGetComponent(out Unit _unit))
             {
-                _selectedUnits.Add(_unit);
+                if (PlayerUnitsManager.Instance.Units.Contains(_unit))
+                {
+                    _selectedUnits.Add(_unit);
+                }
             }
         }
+    }
+
+    void OnRightClick()
+    {
+        if (_selectedUnits.Count == 0) return;
+
+        Ray ray = _cam.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast (ray, out RaycastHit _hit, _raycastDistance))
+        {
+            if (_hit.collider.TryGetComponent(out Unit _unit))
+            {
+                if (!PlayerUnitsManager.Instance.Units.Contains(_unit))
+                {
+                    foreach (Unit unit in _selectedUnits)
+                    {
+                        unit.SetAttackUnit(_unit);
+                    }
+                }
+                return;
+            }
+                
+                
+            Vector3 endPosition = _hit.point;
+            bool blocked = NavMesh.Raycast(transform.position, endPosition, out NavMeshHit hit, NavMesh.AllAreas);
+            if (blocked) return; // Cannot move there
+            foreach (Unit unit in _selectedUnits)
+            {
+                unit.MoveTo(endPosition);
+            }
+        }    
     }
 }

@@ -27,9 +27,10 @@ public class PlayerUnitsManager : MonoBehaviour
     {
         if (_units.Contains(unit)) return;
         _units.Add(unit);
+        unit.OnKilled += () => Deregister(unit);
     }
     
-    public void Deregister(Unit unit)
+    private void Deregister(Unit unit)
     {
         if (!_units.Contains(unit)) return;
         _units.Remove(unit);
