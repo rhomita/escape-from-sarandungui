@@ -4,28 +4,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Unit : MonoBehaviour
+public abstract class Unit : MonoBehaviour
 {
-    [SerializeField] private Animator _animator;
-    
-    [Header("Bullet")]
-    [SerializeField] private GameObject _bulletPrefab;
-    [SerializeField] private Transform _bulletSpawnPoint;
-    
     public delegate void OnKilledEvent();
     public OnKilledEvent OnKilled;
     public bool IsDead => _health <= 0;
     
-    private Ragdoll _ragdoll;
-    private Collider _collider;
-    private NavMeshAgent _navMeshAgent;
-    private Unit _unitTarget;
+    protected Collider _collider;
+    protected NavMeshAgent _navMeshAgent;
+    protected Unit _unitTarget;
 
-    private float _minAttackRange = 7f;
-    private float _maxAttackRange = 24f;
-    private float _angleToShot = 165;
-    private float _speed;
-    private float _attackSpeedDecrease = 2f;
+    protected float _minAttackRange;
+    protected float _maxAttackRange;
+    protected float _angleToShot;
+    protected float _speed;
 
     private float _attackCooldownTimer;
     private static float ATTACK_COOLDOWN_TIME = 1;
@@ -33,9 +25,11 @@ public class Unit : MonoBehaviour
     // Stats
     private float _health;
 
-    void Awake()
+    protected abstract void OnUpdate();
+    protected abstract void OnShoot();
+
+    protected virtual void Awake()
     {
-        _ragdoll = transform.GetComponent<Ragdoll>();
         _collider = transform.GetComponent<Collider>();
         _navMeshAgent = transform.GetComponent<NavMeshAgent>();
         _maxAttackRange = Mathf.Pow(_maxAttackRange, 2);
@@ -47,13 +41,13 @@ public class Unit : MonoBehaviour
         _speed = _navMeshAgent.speed;
     }
     
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         _health = 100;
         _attackCooldownTimer = 0;
-        _ragdoll.SetEnabled(false);
         _collider.enabled = true;
     }
+
 
     void Update()
     {
@@ -66,40 +60,8 @@ public class Unit : MonoBehaviour
         {
             return;
         }
-
-        bool isShooting = false;
-        if (_unitTarget != null)
-        {
-            Vector3 targetPosition = _unitTarget.transform.position;
-            Vector3 directionToTarget = targetPosition - transform.position;
-            float sqrDistance = Vector3.SqrMagnitude(directionToTarget);
-            
-            float angle = Vector3.Angle(transform.forward, targetPosition - directionToTarget);
-            bool inFront = angle > _angleToShot;
-            isShooting = sqrDistance < _maxAttackRange && inFront;
-            
-            if (sqrDistance < _minAttackRange)
-            {
-                RotateTowardsPosition(_unitTarget.transform.position);
-                _navMeshAgent.isStopped = true;
-            }
-            else
-            {
-                _navMeshAgent.speed = _speed - _attackSpeedDecrease;
-                SetDestination(_unitTarget.transform.position);
-            }
-            
-            if (isShooting) Shoot();
-        }
         
-        bool isRunning = _navMeshAgent.velocity.magnitude > 0.1f;
-        if (isRunning)
-        {
-            RotateTowardsPosition(_navMeshAgent.destination);
-        }
-        
-        _animator.SetBool("isRunning", isRunning);
-        _animator.SetBool("isShooting", isShooting);
+        OnUpdate();
     }
 
     public void MoveTo(Vector3 position)
@@ -129,25 +91,37 @@ public class Unit : MonoBehaviour
         _unitTarget = null;
     }
 
-    private void Shoot()
+    protected void Shoot()
     {
-        // TODO: ROTATE TO ATTACK.
         if (_attackCooldownTimer <= 0)
         {
             _attackCooldownTimer = ATTACK_COOLDOWN_TIME;
-            SimplePool.Spawn(_bulletPrefab, _bulletSpawnPoint.position, _bulletSpawnPoint.rotation);
+            OnShoot();
         }
     }
 
-    private void Kill()
+    protected virtual void Kill()
     {
         OnKilled();
         enabled = false;
         _collider.enabled = false;
-        _ragdoll.SetEnabled(true);
         Destroy(gameObject, 10);
     }
 
+    protected void SetDestination(Vector3 position)
+    {
+        _navMeshAgent.isStopped = false;
+        _navMeshAgent.SetDestination(position);
+    }
+
+    protected void RotateTowardsPosition(Vector3 position)
+    {
+        Vector3 direction = (position - transform.position).normalized;
+        direction.y = 0;
+        Quaternion rotation = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * _navMeshAgent.angularSpeed);
+    }
+    
     public void TakeDamage(int damage)
     {
         if (IsDead) return;
@@ -156,19 +130,5 @@ public class Unit : MonoBehaviour
         {
             Kill();
         }
-    }
-
-    private void SetDestination(Vector3 position)
-    {
-        _navMeshAgent.isStopped = false;
-        _navMeshAgent.SetDestination(position);
-    }
-
-    private void RotateTowardsPosition(Vector3 position)
-    {
-        Vector3 direction = (position - transform.position).normalized;
-        direction.y = 0;
-        Quaternion rotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * _navMeshAgent.angularSpeed);
     }
 }

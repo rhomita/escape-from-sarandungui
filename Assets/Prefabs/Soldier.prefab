@@ -40,9 +40,9 @@ GameObject:
   m_Component:
   - component: {fileID: 677543229202746399}
   - component: {fileID: 677543229202746392}
-  - component: {fileID: 677543229202746393}
   - component: {fileID: 677543229202746394}
   - component: {fileID: 476631978}
+  - component: {fileID: 2839491363483604030}
   m_Layer: 0
   m_Name: Soldier
   m_TagString: Soldier
@@ -88,21 +88,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &677543229202746393
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 677543229202746398}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9193e3fd647b1040a56ff0c281dcd45, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _animator: {fileID: 6344877343809872195}
-  _bulletPrefab: {fileID: 4349077963137132429, guid: edd849f1a79517642ada03757dd27883, type: 3}
-  _bulletSpawnPoint: {fileID: 811494520}
 --- !u!136 &677543229202746394
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -130,6 +115,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 6344877343809872195}
+--- !u!114 &2839491363483604030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 677543229202746398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49d7aa1972c94273afd192901e3ec775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 6344877343809872195}
+  _bulletPrefab: {fileID: 4349077963137132429, guid: edd849f1a79517642ada03757dd27883, type: 3}
+  _bulletSpawnPoint: {fileID: 811494520}
 --- !u!1 &677543229223589802
 GameObject:
   m_ObjectHideFlags: 0

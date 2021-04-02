@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlayerUnitsSpawner : MonoBehaviour
 {
-    [SerializeField] private Unit _unitPrefab;
+    [SerializeField] private Unit _soldierPrefab;
+    [SerializeField] private Unit _tankPrefab;
     
     void Start()
     {
@@ -16,13 +17,24 @@ public class PlayerUnitsSpawner : MonoBehaviour
         // TODO: USE POOL FOR UNITS.
         if (Input.GetKeyDown(KeyCode.R))
         {
-            Unit unitCreated = Instantiate(_unitPrefab, transform.position, transform.rotation);
+            Unit unitCreated = Instantiate(_soldierPrefab, transform.position, transform.rotation);
             PlayerUnitsManager.Instance.Register(unitCreated);
         }
         
         if (Input.GetKeyDown(KeyCode.T))
         {
-            Instantiate(_unitPrefab, transform.position, transform.rotation);
+            Instantiate(_soldierPrefab, transform.position, transform.rotation);
+        }
+        
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            Unit unitCreated = Instantiate(_tankPrefab, transform.position, transform.rotation);
+            PlayerUnitsManager.Instance.Register(unitCreated);
+        }
+        
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            Instantiate(_tankPrefab, transform.position, transform.rotation);
         }
     }
 }
