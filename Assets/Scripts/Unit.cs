@@ -14,20 +14,24 @@ public class Unit : MonoBehaviour
     
     public delegate void OnKilledEvent();
     public OnKilledEvent OnKilled;
+    public bool IsDead => _isDead;
     
     private NavMeshAgent _navMeshAgent;
     private Unit _unitTarget;
 
     private float _minAttackRange = 7f;
-    private float _maxAttackRange = 15f;
+    private float _maxAttackRange = 24f;
+    private float _angleToShot = 165;
+    private float _speed;
+    private float _attackSpeedDecrease = 2f;
 
     private bool _isDead = false;
-    private float attackCooldownTimer;
-    private static float ATTACK_COOLDOWN = 1;
+    private float _attackCooldownTimer;
+    private static float ATTACK_COOLDOWN_TIME = 1;
     
     // Stats
     private float _health;
-    
+
     void Awake()
     {
         _navMeshAgent = transform.GetComponent<NavMeshAgent>();
@@ -35,17 +39,22 @@ public class Unit : MonoBehaviour
         _minAttackRange = Mathf.Pow(_minAttackRange, 2);
     }
 
+    void Start()
+    {
+        _speed = _navMeshAgent.speed;
+    }
+    
     private void OnEnable()
     {
         _health = 100;
-        attackCooldownTimer = 0;
+        _attackCooldownTimer = 0;
     }
 
     void Update()
     {
-        if (attackCooldownTimer >= 0)
+        if (_attackCooldownTimer >= 0)
         {
-            attackCooldownTimer -= Time.deltaTime;
+            _attackCooldownTimer -= Time.deltaTime;
         }
 
         if (_health <= 0)
@@ -54,19 +63,26 @@ public class Unit : MonoBehaviour
             Kill();
             return;
         }
-        
+
         bool isShooting = false;
         if (_unitTarget != null)
         {
             Vector3 targetPosition = _unitTarget.transform.position;
-            float sqrDistance = Vector3.SqrMagnitude(targetPosition - transform.position);
-            isShooting = sqrDistance < _maxAttackRange;
+            Vector3 directionToTarget = targetPosition - transform.position;
+            float sqrDistance = Vector3.SqrMagnitude(directionToTarget);
+            
+            float angle = Vector3.Angle(transform.forward, targetPosition - directionToTarget);
+            bool inFront = angle > _angleToShot;
+            isShooting = sqrDistance < _maxAttackRange && inFront;
+            
             if (sqrDistance < _minAttackRange)
             {
+                RotateTowardsPosition(_unitTarget.transform.position);
                 _navMeshAgent.isStopped = true;
             }
             else
             {
+                _navMeshAgent.speed = _speed - _attackSpeedDecrease;
                 SetDestination(_unitTarget.transform.position);
             }
             
@@ -74,18 +90,24 @@ public class Unit : MonoBehaviour
         }
         
         bool isRunning = _navMeshAgent.velocity.magnitude > 0.1f;
+        if (isRunning)
+        {
+            RotateTowardsPosition(_navMeshAgent.destination);
+        }
+        
         _animator.SetBool("isRunning", isRunning);
         _animator.SetBool("isShooting", isShooting);
     }
 
     public void MoveTo(Vector3 position)
     {
+        _navMeshAgent.speed = _speed;
         RemoveTarget();
         SetDestination(position);
     }
 
     public void SetAttackUnit(Unit unitTarget)
-    {
+    {    
         RemoveTarget();
         _unitTarget = unitTarget;
         _unitTarget.OnKilled = OnTargetKilled;
@@ -96,6 +118,7 @@ public class Unit : MonoBehaviour
     {
         if (_unitTarget == null) return;
         _unitTarget.OnKilled -= OnTargetKilled;
+        _unitTarget = null;
     }
     
     public void OnTargetKilled()
@@ -106,9 +129,9 @@ public class Unit : MonoBehaviour
     private void Shoot()
     {
         // TODO: ROTATE TO ATTACK.
-        if (attackCooldownTimer <= 0)
+        if (_attackCooldownTimer <= 0)
         {
-            attackCooldownTimer = ATTACK_COOLDOWN;
+            _attackCooldownTimer = ATTACK_COOLDOWN_TIME;
             SimplePool.Spawn(_bulletPrefab, _bulletSpawnPoint.position, _bulletSpawnPoint.rotation);
         }
     }
@@ -123,20 +146,23 @@ public class Unit : MonoBehaviour
 
     private void SetDestination(Vector3 position)
     {
-        // Vector3 direction = (position - transform.position).normalized;
-        // direction.y = 0;
-        // Quaternion rotation = Quaternion.LookRotation(direction);
-        // transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * _navMeshAgent.angularSpeed);
-        
         _navMeshAgent.isStopped = false;
         _navMeshAgent.SetDestination(position);
+    }
+
+    private void RotateTowardsPosition(Vector3 position)
+    {
+        Vector3 direction = (position - transform.position).normalized;
+        direction.y = 0;
+        Quaternion rotation = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * _navMeshAgent.angularSpeed);
     }
     
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out Bullet bullet))
         {
-            
+            // TODO: Remove health
             bullet.OnUnitHit();
         }
     }

@@ -138,7 +138,6 @@ public static class SimplePool {
 		if(pools == null) {
 			pools = new Dictionary<GameObject, Pool>();
 		}
-		Debug.Log(prefab);
 		if(prefab!=null && pools.ContainsKey(prefab) == false) {
 			pools[prefab] = new Pool(prefab, qty);
 		}
