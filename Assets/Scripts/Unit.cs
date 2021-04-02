@@ -14,7 +14,7 @@ public class Unit : MonoBehaviour
     
     public delegate void OnKilledEvent();
     public OnKilledEvent OnKilled;
-    public bool IsDead => _isDead;
+    public bool IsDead => _health <= 0;
     
     private NavMeshAgent _navMeshAgent;
     private Unit _unitTarget;
@@ -25,7 +25,6 @@ public class Unit : MonoBehaviour
     private float _speed;
     private float _attackSpeedDecrease = 2f;
 
-    private bool _isDead = false;
     private float _attackCooldownTimer;
     private static float ATTACK_COOLDOWN_TIME = 1;
     
@@ -59,8 +58,6 @@ public class Unit : MonoBehaviour
 
         if (_health <= 0)
         {
-            if (_isDead) return;
-            Kill();
             return;
         }
 
@@ -138,10 +135,19 @@ public class Unit : MonoBehaviour
 
     private void Kill()
     {
-        _isDead = true;
         OnKilled();
-        this.enabled = false;
+        enabled = false;
         Destroy(gameObject, 10);
+    }
+
+    public void TakeDamage(int damage)
+    {
+        if (IsDead) return;
+        _health -= damage;
+        if (IsDead)
+        {
+            Kill();
+        }
     }
 
     private void SetDestination(Vector3 position)
@@ -156,14 +162,5 @@ public class Unit : MonoBehaviour
         direction.y = 0;
         Quaternion rotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * _navMeshAgent.angularSpeed);
-    }
-    
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.TryGetComponent(out Bullet bullet))
-        {
-            // TODO: Remove health
-            bullet.OnUnitHit();
-        }
     }
 }

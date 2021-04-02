@@ -9,7 +9,7 @@ public class Bullet : MonoBehaviour
     private float _speed = 6f;
     private float _timeToDie = 10f;
     private float _livingTime;
-    public float Damage => 10;
+    private int _damage = 10;
     
     void Awake()
     {
@@ -32,14 +32,16 @@ public class Bullet : MonoBehaviour
         _rigidbody.AddForce(transform.forward * _speed, ForceMode.Impulse);
     }
 
-    private void OnCollisionEnter(Collision other)
+    private void OnTriggerEnter(Collider collider)
     {
-        // TODO
-        Debug.Log(">" + other.gameObject.name);
+        if (collider.TryGetComponent(out Unit unit))
+        {
+            unit.TakeDamage(_damage);
+            SimplePool.Despawn(gameObject);
+        }
     }
 
     public void OnUnitHit()
     {
-        SimplePool.Despawn(gameObject);
     }
 }
