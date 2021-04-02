@@ -16,6 +16,8 @@ public class Unit : MonoBehaviour
     public OnKilledEvent OnKilled;
     public bool IsDead => _health <= 0;
     
+    private Ragdoll _ragdoll;
+    private Collider _collider;
     private NavMeshAgent _navMeshAgent;
     private Unit _unitTarget;
 
@@ -33,6 +35,8 @@ public class Unit : MonoBehaviour
 
     void Awake()
     {
+        _ragdoll = transform.GetComponent<Ragdoll>();
+        _collider = transform.GetComponent<Collider>();
         _navMeshAgent = transform.GetComponent<NavMeshAgent>();
         _maxAttackRange = Mathf.Pow(_maxAttackRange, 2);
         _minAttackRange = Mathf.Pow(_minAttackRange, 2);
@@ -47,6 +51,8 @@ public class Unit : MonoBehaviour
     {
         _health = 100;
         _attackCooldownTimer = 0;
+        _ragdoll.SetEnabled(false);
+        _collider.enabled = true;
     }
 
     void Update()
@@ -137,6 +143,8 @@ public class Unit : MonoBehaviour
     {
         OnKilled();
         enabled = false;
+        _collider.enabled = false;
+        _ragdoll.SetEnabled(true);
         Destroy(gameObject, 10);
     }
 
