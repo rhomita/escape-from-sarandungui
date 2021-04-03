@@ -28,4 +28,12 @@ public class Ragdoll : MonoBehaviour
 
         animator.enabled = !enabled;
     }
+
+    public void AddImpulse(Vector3 force)
+    {
+        foreach (Rigidbody rigidbody in _rigidbodies)
+        {
+            rigidbody.AddForce(force, ForceMode.Impulse);
+        }
+    }
 }

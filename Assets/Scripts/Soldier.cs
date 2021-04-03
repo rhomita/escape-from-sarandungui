@@ -35,6 +35,7 @@ public class Soldier : Unit
         if (_unitTarget != null)
         {
             Vector3 targetPosition = _unitTarget.transform.position;
+            targetPosition.y = 0;
             Vector3 directionToTarget = targetPosition - transform.position;
             float sqrDistance = Vector3.SqrMagnitude(directionToTarget);
             
@@ -71,10 +72,11 @@ public class Soldier : Unit
         SimplePool.Spawn(_bulletPrefab, _bulletSpawnPoint.position, _bulletSpawnPoint.rotation);
     }
 
-    protected override void Kill()
+    protected override void Kill(Vector3 damageForce)
     {
-        base.Kill();
+        base.Kill(damageForce);
         _ragdoll.SetEnabled(true);
+        _ragdoll.AddImpulse(damageForce);
     }
-    
+
 }

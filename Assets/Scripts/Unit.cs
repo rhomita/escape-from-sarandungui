@@ -46,6 +46,7 @@ public abstract class Unit : MonoBehaviour
         _health = 100;
         _attackCooldownTimer = 0;
         _collider.enabled = true;
+        _navMeshAgent.enabled = true;
     }
 
 
@@ -72,7 +73,8 @@ public abstract class Unit : MonoBehaviour
     }
 
     public void SetAttackUnit(Unit unitTarget)
-    {    
+    {
+        if (unitTarget.IsDead) return;
         RemoveTarget();
         _unitTarget = unitTarget;
         _unitTarget.OnKilled = OnTargetKilled;
@@ -100,11 +102,12 @@ public abstract class Unit : MonoBehaviour
         }
     }
 
-    protected virtual void Kill()
+    protected virtual void Kill(Vector3 damageForce)
     {
-        OnKilled();
+        OnKilled?.Invoke();
         enabled = false;
         _collider.enabled = false;
+        _navMeshAgent.enabled = false;
         Destroy(gameObject, 10);
     }
 
@@ -118,17 +121,18 @@ public abstract class Unit : MonoBehaviour
     {
         Vector3 direction = (position - transform.position).normalized;
         direction.y = 0;
+        if (direction.Equals(Vector3.zero)) return;
         Quaternion rotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * _navMeshAgent.angularSpeed);
     }
     
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, Vector3 damageForce)
     {
         if (IsDead) return;
         _health -= damage;
         if (IsDead)
         {
-            Kill();
+            Kill(damageForce);
         }
     }
 }

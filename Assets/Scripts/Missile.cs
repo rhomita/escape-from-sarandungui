@@ -7,7 +7,11 @@ public class Missile : MonoBehaviour
     private float _maxSpeed = 15f;
     private float _timeToDie = 10f;
     private float _livingTime;
-    private int _damage = 10;
+    private int _minDamage = 20;
+    private int _maxDamage = 40;
+    private float _damageForce = 15f;
+    private float _damageUpForce = 5f;
+    private float _explosionRadius = 2f;
 
     private float _timeToIncreaseSpeed = 1.5f;
     
@@ -36,10 +40,16 @@ public class Missile : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
-        if (collider.TryGetComponent(out Unit unit))
+        Collider[] colliders = Physics.OverlapSphere(transform.position, _explosionRadius);
+        foreach (Collider _collider in colliders)
         {
-            unit.TakeDamage(_damage);
-            SimplePool.Despawn(gameObject);
+            if (_collider.TryGetComponent(out Unit unit))
+            {
+                int damage = Random.Range(_minDamage, _maxDamage);
+                Vector3 direction = (collider.transform.position - transform.position).normalized + (Vector3.up * _damageUpForce);
+                unit.TakeDamage(damage, direction * _damageForce);
+                SimplePool.Despawn(gameObject);    
+            }
         }
     }
 }
