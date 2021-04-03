@@ -9,8 +9,27 @@ public class Tank : Unit
     [SerializeField] private Transform _cannonSpawnPoint;
     [SerializeField] private GameObject _missilePrefab;
 
+    [Header("Mesh")] 
+    [SerializeField] private List<MeshRenderer> _cannonMeshes;
+    [SerializeField] private MeshRenderer _tankMesh;
+    
     private float _minAngleToMoveForward = 9f;
     private float _cannonRotateSpeed = 4f;
+
+    public override void InitTeam(Team team)
+    {
+        _team = team;
+        Material[] materials = _tankMesh.materials;
+        materials[3] = _team.Material;
+        _tankMesh.materials = materials;
+
+        foreach (MeshRenderer meshRenderer in _cannonMeshes)
+        {
+            materials = meshRenderer.materials;
+            materials[0] = _team.Material;
+            meshRenderer.materials = materials;
+        }
+    }
 
     protected override void Awake()
     {
@@ -70,7 +89,8 @@ public class Tank : Unit
 
     protected override void OnShoot()
     {
-        SimplePool.Spawn(_missilePrefab, _cannonSpawnPoint.position, _cannonSpawnPoint.rotation);
+        Missile missile = SimplePool.Spawn(_missilePrefab, _cannonSpawnPoint.position, _cannonSpawnPoint.rotation).GetComponent<Missile>();
+        missile.Init(this);
     }
 
     private void RotateCannon(Vector3 position)

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Soldier : Unit
 {
@@ -7,11 +8,28 @@ public class Soldier : Unit
     [Header("Bullet")]
     [SerializeField] private GameObject _bulletPrefab;
     [SerializeField] private Transform _bulletSpawnPoint;
+
+    [Header("Mesh")] 
+    [SerializeField] private SkinnedMeshRenderer _bodyMesh;
+    [SerializeField] private MeshRenderer _weaponMesh;
     
     private Ragdoll _ragdoll;
 
     protected float _attackSpeedDecrease;
-    
+
+    public override void InitTeam(Team team)
+    {
+        _team = team;
+        Material[] materials = _bodyMesh.materials;
+        materials[2] = _team.Material;
+        materials[3] = _team.Material;
+        _bodyMesh.materials = materials;
+
+        materials = _weaponMesh.materials;
+        materials[2] = _team.Material;
+        _weaponMesh.materials = materials;
+    }
+
     protected override void Awake()
     {
         _ragdoll = transform.GetComponent<Ragdoll>();
@@ -41,7 +59,6 @@ public class Soldier : Unit
             directionToTarget.y = transform.position.y;
             float angle = Vector3.Angle(transform.forward, directionToTarget);
             bool inFront = angle < _angleToShot;
-            Debug.Log(angle);
 
             float sqrDistance = Vector3.SqrMagnitude(directionToTarget);
             isShooting = sqrDistance < _maxAttackRange && inFront;
@@ -72,7 +89,8 @@ public class Soldier : Unit
 
     protected override void OnShoot()
     {
-        SimplePool.Spawn(_bulletPrefab, _bulletSpawnPoint.position, _bulletSpawnPoint.rotation);
+        Bullet bullet = SimplePool.Spawn(_bulletPrefab, _bulletSpawnPoint.position, _bulletSpawnPoint.rotation).GetComponent<Bullet>();
+        bullet.Init(this);
     }
 
     protected override void Kill(Vector3 damageForce)

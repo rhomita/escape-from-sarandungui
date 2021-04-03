@@ -14,6 +14,7 @@ public abstract class Unit : MonoBehaviour
     public delegate void OnKilledEvent();
     public OnKilledEvent OnKilled;
     public bool IsDead => _health <= 0;
+    public Team Team => _team;
     
     protected Collider _collider;
     protected NavMeshAgent _navMeshAgent;
@@ -24,6 +25,7 @@ public abstract class Unit : MonoBehaviour
     protected float _maxAttackRange;
     protected float _angleToShot;
     protected float _speed;
+    protected Team _team;
 
     private float _attackCooldownTimer;
     private static float ATTACK_COOLDOWN_TIME = 1;
@@ -33,6 +35,7 @@ public abstract class Unit : MonoBehaviour
 
     protected abstract void OnUpdate();
     protected abstract void OnShoot();
+    public abstract void InitTeam(Team team);
 
     protected virtual void Awake()
     {

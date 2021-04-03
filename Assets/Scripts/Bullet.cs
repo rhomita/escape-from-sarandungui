@@ -1,43 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class Bullet : Projectile
 {
-    private Rigidbody _rigidbody;
     private float _speed = 6f;
-    private float _timeToDie = 10f;
-    private float _livingTime;
-    private int _minDamage = 5;
-    private int _maxDamage = 15;
     private float _damageForce = 70f;
     
-    void Awake()
+    protected override void OnInit()
     {
-        _rigidbody = transform.GetComponent<Rigidbody>();
-    }
-
-    void Update()
-    {
-        _livingTime += Time.deltaTime;
-        if (_livingTime > _timeToDie)
-        {
-            SimplePool.Despawn(gameObject);
-        }
-    }
-
-    private void OnEnable()
-    {
-        _rigidbody.velocity = Vector3.zero;
-        _livingTime = 0;
+        _minDamage = 5;
+        _maxDamage = 15;
         _rigidbody.AddForce(transform.forward * _speed, ForceMode.Impulse);
+    }
+
+    protected override void OnUpdate()
+    {
     }
 
     private void OnTriggerEnter(Collider collider)
     {
+        if (!_initialized) return;
         if (collider.TryGetComponent(out Unit unit))
         {
-            int damage = Random.Range(_minDamage, _maxDamage);
+            if (unit.Team.Number == _team.Number) return;
+            int damage = GetDamage();
             Vector3 direction = collider.transform.position - transform.position;
             unit.TakeDamage(damage, direction.normalized * _damageForce);
             SimplePool.Despawn(gameObject);
