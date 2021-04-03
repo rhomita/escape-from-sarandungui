@@ -26,6 +26,7 @@ public abstract class Unit : MonoBehaviour
     protected float _angleToShot;
     protected float _speed;
     protected Team _team;
+    protected float _timeToDespawnAfterKilled = 8f;
 
     private float _attackCooldownTimer;
     private static float ATTACK_COOLDOWN_TIME = 1;
@@ -121,11 +122,10 @@ public abstract class Unit : MonoBehaviour
     protected virtual void Kill(Vector3 damageForce)
     {
         OnKilled?.Invoke();
-        enabled = false;
         _collider.enabled = false;
         _navMeshAgent.enabled = false;
         DeSelect();
-        Destroy(gameObject, 10);
+        StartCoroutine(DeSpawn());
     }
 
     protected void SetDestination(Vector3 position)
@@ -166,5 +166,11 @@ public abstract class Unit : MonoBehaviour
     public void DeSelect()
     {
         _selection.SetActive(false);   
+    }
+    
+    private IEnumerator DeSpawn()
+    {
+        yield return new WaitForSeconds(_timeToDespawnAfterKilled);
+        SimplePool.Despawn(this.gameObject);
     }
 }

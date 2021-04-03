@@ -237,7 +237,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lookAtCamera: 0
-  healthSlider: {fileID: 4656014226158374685}
+  _healthSlider: {fileID: 0}
+  _sliderImage: {fileID: 0}
+  _offset: {x: 0, y: 0, z: 0}
 --- !u!1 &4656014227679698965
 GameObject:
   m_ObjectHideFlags: 0

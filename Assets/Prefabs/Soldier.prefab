@@ -276,9 +276,6 @@ MonoBehaviour:
   _damagePopupPrefab: {fileID: 6168756845117022958, guid: c08d557a58022dd4987fc045ee145604, type: 3}
   _selection: {fileID: 506102754}
   floatingHealthBar: {fileID: 793706787}
-  _team:
-    Number: 1
-    Material: {fileID: 2100000, guid: 5a902db52f8fd26488791c935ed9a095, type: 2}
   _animator: {fileID: 6344877343809872195}
   _bulletPrefab: {fileID: 4349077963137132429, guid: edd849f1a79517642ada03757dd27883, type: 3}
   _bulletSpawnPoint: {fileID: 811494520}
