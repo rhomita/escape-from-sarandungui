@@ -7,7 +7,7 @@ public class Tank : Unit
 {
     [SerializeField] private Transform _cannon;
     [SerializeField] private Transform _cannonSpawnPoint;
-    [SerializeField] private Missile _missilePrefab;
+    [SerializeField] private GameObject _missilePrefab;
 
     private float _minAngleToMoveForward = 9f;
     private float _cannonRotateSpeed = 2f;
@@ -15,7 +15,7 @@ public class Tank : Unit
     protected override void Awake()
     {
         _maxAttackRange = 40f;
-        _angleToShot = 3f;
+        _angleToShot = 1f;
         
         base.Awake();
     }
@@ -35,6 +35,7 @@ public class Tank : Unit
             float sqrDistance = Vector3.SqrMagnitude(directionToTarget);
             if (sqrDistance < _maxAttackRange)
             {
+                _navMeshAgent.isStopped = true;
                 float cannonAngle = Vector3.Angle(_cannon.forward, directionToTarget);
                 if (cannonAngle < _angleToShot)
                 {
@@ -47,6 +48,10 @@ public class Tank : Unit
 
                 return;
             }
+        }
+        else
+        {
+            ResetCannonRotation();
         }
 
         if (shouldRotateBeforeMove)
@@ -62,7 +67,7 @@ public class Tank : Unit
 
     protected override void OnShoot()
     {
-        Debug.Log("Shoot!");
+        SimplePool.Spawn(_missilePrefab, _cannonSpawnPoint.position, _cannonSpawnPoint.rotation);
     }
 
     private void RotateCannon(Vector3 position)
@@ -71,5 +76,10 @@ public class Tank : Unit
         direction.y = 0;
         Quaternion rotation = Quaternion.LookRotation(direction);
         _cannon.rotation = Quaternion.Slerp(_cannon.rotation, rotation, Time.deltaTime * _cannonRotateSpeed);
+    }
+
+    private void ResetCannonRotation()
+    {
+        _cannon.rotation = Quaternion.Slerp(_cannon.rotation, transform.rotation, Time.deltaTime * _cannonRotateSpeed);
     }
 }

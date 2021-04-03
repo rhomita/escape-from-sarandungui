@@ -40,8 +40,4 @@ public class Bullet : MonoBehaviour
             SimplePool.Despawn(gameObject);
         }
     }
-
-    public void OnUnitHit()
-    {
-    }
 }
