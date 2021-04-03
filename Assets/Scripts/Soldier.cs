@@ -17,8 +17,9 @@ public class Soldier : Unit
         _ragdoll = transform.GetComponent<Ragdoll>();
         _minAttackRange = 7f;
         _maxAttackRange = 24f;
-        _angleToShot = 165;
+        _angleToShot = 7;
         _attackSpeedDecrease = 2f;
+        _maxHealth = 100f;
         
         base.Awake();
     }
@@ -35,12 +36,14 @@ public class Soldier : Unit
         if (_unitTarget != null)
         {
             Vector3 targetPosition = _unitTarget.transform.position;
-            targetPosition.y = 0;
             Vector3 directionToTarget = targetPosition - transform.position;
+
+            directionToTarget.y = transform.position.y;
+            float angle = Vector3.Angle(transform.forward, directionToTarget);
+            bool inFront = angle < _angleToShot;
+            Debug.Log(angle);
+
             float sqrDistance = Vector3.SqrMagnitude(directionToTarget);
-            
-            float angle = Vector3.Angle(transform.forward, targetPosition - directionToTarget);
-            bool inFront = angle > _angleToShot;
             isShooting = sqrDistance < _maxAttackRange && inFront;
             
             if (sqrDistance < _minAttackRange)

@@ -16,6 +16,7 @@ public class Tank : Unit
     {
         _maxAttackRange = 40f;
         _angleToShot = 1.5f;
+        _maxHealth = 400f;
 
         base.Awake();
     }
@@ -40,7 +41,6 @@ public class Tank : Unit
                 destination.y = _cannon.position.y;
                 Vector3 directionToTargetFromCanon = destination - _cannon.position;
                 float cannonAngle = Vector3.Angle(_cannon.forward, directionToTargetFromCanon);
-                Debug.Log(cannonAngle);
                 if (cannonAngle < _angleToShot)
                 {
                     Shoot();

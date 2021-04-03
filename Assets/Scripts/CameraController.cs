@@ -47,6 +47,10 @@ public class CameraController : MonoBehaviour
     {
         _selectionPanel.gameObject.SetActive(true);
         _selectionPanel.position = Input.mousePosition;
+        foreach (Unit unit in _selectedUnits)
+        {
+            unit.DeSelect();
+        }
         _selectedUnits.Clear();
     }
 
@@ -86,6 +90,11 @@ public class CameraController : MonoBehaviour
                     _selectedUnits.Add(_unit);
                 }
             }
+        }
+        
+        foreach (Unit unit in _selectedUnits)
+        {
+            unit.Select();
         }
     }
 

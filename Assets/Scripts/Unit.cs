@@ -1,11 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UI;
 using UnityEngine;
 using UnityEngine.AI;
 
 public abstract class Unit : MonoBehaviour
 {
+    [SerializeField] private GameObject _damagePopupPrefab;
+    [SerializeField] private GameObject _selection;
+    [SerializeField] private FloatingHealthBar floatingHealthBar;
+    
     public delegate void OnKilledEvent();
     public OnKilledEvent OnKilled;
     public bool IsDead => _health <= 0;
@@ -14,6 +19,7 @@ public abstract class Unit : MonoBehaviour
     protected NavMeshAgent _navMeshAgent;
     protected Unit _unitTarget;
 
+    protected float _maxHealth;
     protected float _minAttackRange;
     protected float _maxAttackRange;
     protected float _angleToShot;
@@ -43,10 +49,14 @@ public abstract class Unit : MonoBehaviour
     
     protected virtual void OnEnable()
     {
-        _health = 100;
+        _health = _maxHealth;
         _attackCooldownTimer = 0;
         _collider.enabled = true;
         _navMeshAgent.enabled = true;
+        _unitTarget = null;
+        _selection.SetActive(false);
+        floatingHealthBar.SetMaxHealth(_health);
+        floatingHealthBar.SetHealth(_health);
     }
 
 
@@ -67,6 +77,7 @@ public abstract class Unit : MonoBehaviour
 
     public void MoveTo(Vector3 position)
     {
+        if (IsDead) return;
         _navMeshAgent.speed = _speed;
         RemoveTarget();
         SetDestination(position);
@@ -74,15 +85,17 @@ public abstract class Unit : MonoBehaviour
 
     public void SetAttackUnit(Unit unitTarget)
     {
+        if (IsDead) return;
         if (unitTarget.IsDead) return;
         RemoveTarget();
         _unitTarget = unitTarget;
-        _unitTarget.OnKilled = OnTargetKilled;
+        _unitTarget.OnKilled += OnTargetKilled;
         _navMeshAgent.isStopped = true;
     }
 
     public void RemoveTarget()
     {
+        if (IsDead) return;
         if (_unitTarget == null) return;
         _unitTarget.OnKilled -= OnTargetKilled;
         _unitTarget = null;
@@ -108,6 +121,7 @@ public abstract class Unit : MonoBehaviour
         enabled = false;
         _collider.enabled = false;
         _navMeshAgent.enabled = false;
+        DeSelect();
         Destroy(gameObject, 10);
     }
 
@@ -129,10 +143,25 @@ public abstract class Unit : MonoBehaviour
     public void TakeDamage(int damage, Vector3 damageForce)
     {
         if (IsDead) return;
+
+        DamagePopup damagePopup = SimplePool.Spawn(_damagePopupPrefab, Vector3.zero, Quaternion.identity).GetComponent<DamagePopup>();
+        damagePopup.Show(transform.position, damage);
+        
         _health -= damage;
+        floatingHealthBar.SetHealth(_health);
         if (IsDead)
         {
             Kill(damageForce);
         }
+    }
+
+    public void Select()
+    {
+        _selection.SetActive(true);
+    }
+
+    public void DeSelect()
+    {
+        _selection.SetActive(false);   
     }
 }
