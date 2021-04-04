@@ -1,10 +1,15 @@
-﻿using UI;
+﻿using System.Collections;
+using UI;
 using UnityEngine;
 
 public class Rocket : Attackable
 {
     [SerializeField] private Transform parts;
     [SerializeField] private ProgressBar _progressBar;
+    
+    [Header("End")]
+    [SerializeField] private GameObject _fireParticles;
+    [SerializeField] private GameObject _engineers;
 
     private float _progress = 0f;
     private float _minRandomProgress = 0.1f;
@@ -15,7 +20,7 @@ public class Rocket : Attackable
     private float _progressPerPart;
     private float _timeToLose = 10f;
     private float _currentCountdown;
-
+    
     void Start()
     {
         InvokeRepeating("MakeProgress", 1, 1);
@@ -26,11 +31,11 @@ public class Rocket : Attackable
 
     void Update()
     {
+        if (GameManager.Instance.Finished) return;
         if (_progress >= 100)
         {
-            Debug.Log("WIN");
-            enabled = false;
-            _progressBar.gameObject.SetActive(false);
+            GameManager.Instance.Finish(true);
+            StartCoroutine(Launch());
             return;
         }
 
@@ -45,7 +50,9 @@ public class Rocket : Attackable
 
         if (_currentCountdown <= 0f)
         {
-            Debug.Log("LOSE"); // TODO:
+            GameManager.Instance.Finish(false);
+            StartCoroutine(Explode());
+            return;
         }
     }
 
@@ -82,5 +89,34 @@ public class Rocket : Attackable
     {
         _progress -= damage / _damageProgressLossFactor;
         UpdateProgress();
+    }
+
+    private IEnumerator Launch()
+    {
+        enabled = false;
+        _progressBar.gameObject.SetActive(false);
+        _fireParticles.SetActive(true);
+        _engineers.SetActive(false);
+        float seconds = 50f;
+        
+        yield return new WaitForSeconds(1f);
+        
+        Vector3 startPosition = transform.position;
+        Vector3 endPosition = transform.position + Vector3.up * 1000;
+
+        float elapsedTime = 0;
+        while (elapsedTime < seconds)
+        {
+            elapsedTime += Time.deltaTime;
+            transform.position = Vector3.Lerp(startPosition, endPosition, (elapsedTime / seconds));
+            yield return null;
+        }
+
+        yield return null;
+    }
+
+    private IEnumerator Explode()
+    {
+        yield return null;
     }
 }

@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Missile : Projectile
 {
     private float _minSpeed = 1.6f;
-    private float _maxSpeed = 15f;
+    private float _maxSpeed = 8f;
     private float _damageForce = 15f;
     private float _damageUpForce = 5f;
     private float _explosionRadius = 2f;
@@ -37,6 +38,7 @@ public class Missile : Projectile
                 int damage = GetDamage();
                 Vector3 direction = (collider.transform.position - transform.position).normalized + (Vector3.up * _damageUpForce);
                 attackable.TakeDamage(damage, direction * _damageForce);
+                ParticlesManager.Instance.Spawn("explosion", collider.transform.position);
                 SimplePool.Despawn(gameObject);    
             }
         }
