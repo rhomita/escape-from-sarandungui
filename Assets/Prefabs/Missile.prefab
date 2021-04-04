@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 9140879320384628204}
   - component: {fileID: 9140879320384628205}
   - component: {fileID: 9140879320384628210}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Missile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -85,7 +85,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9140879320946938879}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -165,6 +165,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: rocket_baseA
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f78c945f2471c554ca244f0331463349, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f78c945f2471c554ca244f0331463349, type: 3}
 --- !u!4 &8741579454674159040 stripped
@@ -226,6 +230,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: f0bae3d7ef9682342a1234bff917ba6b, type: 3}
       propertyPath: m_Name
       value: rocket_sidesB
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f0bae3d7ef9682342a1234bff917ba6b, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f0bae3d7ef9682342a1234bff917ba6b, type: 3}
@@ -289,6 +297,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: rocket_topB
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6f30cafaf2d9d96428c0b0d52be33701, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6f30cafaf2d9d96428c0b0d52be33701, type: 3}
 --- !u!4 &8741579453717049441 stripped
@@ -350,6 +362,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: f58096b7de04ced4aae8f48e52f94b86, type: 3}
       propertyPath: m_Name
       value: rocket_finsA
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f58096b7de04ced4aae8f48e52f94b86, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f58096b7de04ced4aae8f48e52f94b86, type: 3}

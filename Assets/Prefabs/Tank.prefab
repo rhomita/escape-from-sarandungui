@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 380054366}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Selection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 661719276}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1580792990}
   - component: {fileID: 1580792991}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: glassPanel_corners
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -372,9 +372,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 661719276}
     m_Modifications:
+    - target: {fileID: 4656014226158374673, guid: 6da43f120f8e56145a702651b9211930, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4656014226605558432, guid: 6da43f120f8e56145a702651b9211930, type: 3}
       propertyPath: m_Name
       value: HealthBar
+      objectReference: {fileID: 0}
+    - target: {fileID: 4656014226605558432, guid: 6da43f120f8e56145a702651b9211930, type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4656014226605558433, guid: 6da43f120f8e56145a702651b9211930, type: 3}
       propertyPath: m_Pivot.x
@@ -479,6 +487,10 @@ PrefabInstance:
     - target: {fileID: 4656014227679698965, guid: 6da43f120f8e56145a702651b9211930, type: 3}
       propertyPath: m_Name
       value: SliderImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 4656014227679698965, guid: 6da43f120f8e56145a702651b9211930, type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4656014227679698966, guid: 6da43f120f8e56145a702651b9211930, type: 3}
       propertyPath: m_AnchorMax.x

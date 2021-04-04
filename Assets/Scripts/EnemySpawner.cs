@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class EnemySpawner : PlayerUnitSpawner
 {
-    private float _timeToSpawnTank = 10f;
-    private float _timeToSpawnSoldier = 5f;
+    private float _timeToSpawnTank = 15f;
+    private float _timeToSpawnSoldier = 15f;
 
     private int _quantitySoldiers = 3;
     private int _quantityTanks = 1;
