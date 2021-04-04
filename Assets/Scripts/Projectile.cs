@@ -19,9 +19,7 @@ public abstract class Projectile : MonoBehaviour
     
     private void OnEnable()
     {
-        Debug.Log(_rigidbody.velocity);
         _rigidbody.velocity = Vector3.zero;
-        Debug.Log(_rigidbody.velocity);
         _livingTime = 0;
         _initialized = false;
     }

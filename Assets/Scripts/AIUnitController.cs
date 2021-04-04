@@ -50,7 +50,6 @@ public class AIUnitController : MonoBehaviour
 
         float maxDistance = float.MaxValue;
         Unit attackableUnit = null;
-        Debug.Log(colliders.Length);
         foreach (Collider _collider in colliders)
         {
             if (_collider.transform == transform) continue; // Skip self.

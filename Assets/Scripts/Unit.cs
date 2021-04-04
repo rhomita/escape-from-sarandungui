@@ -59,6 +59,7 @@ public abstract class Unit : Attackable
         _selection.SetActive(false);
         floatingHealthBar.SetMaxHealth(_health);
         floatingHealthBar.SetHealth(_health);
+        _navMeshAgent.SetDestination(transform.position + transform.forward * -2);
     }
 
 

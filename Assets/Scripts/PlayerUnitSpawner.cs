@@ -6,11 +6,14 @@ using UnityEngine;
 public class PlayerUnitSpawner : MonoBehaviour
 {
     [SerializeField] protected UnitSpawner _unitSpawner;
-    [SerializeField] private List<Transform> _spawnPoints;
     [SerializeField] protected Team _team;
+
+    [SerializeField] private Transform _tankSpawnPoint;
+    [SerializeField] private Transform _soldierSpawnPoint;
 
     private int _soldierCost = 100;
     private int _tankCost = 400;
+    private int _workerCost = 200;
 
     private static string NOT_ENOUGH_MONEY_STRING = "Not enough money to spawn unit.";
 
@@ -35,7 +38,7 @@ public class PlayerUnitSpawner : MonoBehaviour
             UIManager.Instance.ShowMessagePopup(NOT_ENOUGH_MONEY_STRING);
             return;
         }
-        Unit unit = _unitSpawner.SpawnTank(_team, GetSpawnPoint().position);
+        Unit unit = _unitSpawner.SpawnTank(_team, _tankSpawnPoint.position);
         PlayerUnitsManager.Instance.Register(unit);
     }
 
@@ -47,13 +50,18 @@ public class PlayerUnitSpawner : MonoBehaviour
             UIManager.Instance.ShowMessagePopup(NOT_ENOUGH_MONEY_STRING);
             return;
         }
-        Unit unit = _unitSpawner.SpawnSoldier(_team, GetSpawnPoint().position);
+        Unit unit = _unitSpawner.SpawnSoldier(_team, _soldierSpawnPoint.position);
         PlayerUnitsManager.Instance.Register(unit);
     }
-
-    protected Transform GetSpawnPoint()
+    
+    public void SpawnWorker()
     {
-        int index = Random.Range(0, _spawnPoints.Count);
-        return _spawnPoints[index];
+        bool success = PlayerMoneyManager.Instance.Remove(_workerCost);
+        if (!success)
+        {
+            UIManager.Instance.ShowMessagePopup(NOT_ENOUGH_MONEY_STRING);
+            return;
+        }
+        PlayerMoneyManager.Instance.AddWorker();
     }
 }

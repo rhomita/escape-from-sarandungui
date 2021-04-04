@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class EnemySpawner : PlayerUnitSpawner
 {
-    private float _timeToSpawnTank = 15f;
-    private float _timeToSpawnSoldier = 15f;
+    [SerializeField] private List<Transform> _spawnPoints;
+
+    private float _timeToSpawnTank = 30f;
+    private float _timeToSpawnSoldier = 20f;
 
     private int _quantitySoldiers = 3;
     private int _quantityTanks = 1;
 
     void Start()
     {
-        InvokeRepeating("SpawnTank", 1, _timeToSpawnTank);
-        InvokeRepeating("SpawnSoldier", 1, _timeToSpawnSoldier);
+        InvokeRepeating("SpawnTank", _timeToSpawnTank, _timeToSpawnTank);
+        InvokeRepeating("SpawnSoldier", _timeToSpawnSoldier, _timeToSpawnSoldier);
     }
 
     void Update()
@@ -36,5 +38,11 @@ public class EnemySpawner : PlayerUnitSpawner
             Unit unit = _unitSpawner.SpawnSoldier(_team, GetSpawnPoint().position);
             unit.gameObject.AddComponent<AIUnitController>();
         }
+    }
+    
+    protected Transform GetSpawnPoint()
+    {
+        int index = Random.Range(0, _spawnPoints.Count);
+        return _spawnPoints[index];
     }
 }

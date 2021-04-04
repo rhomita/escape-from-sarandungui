@@ -1,5 +1,41 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &172805746357512194
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8336618208298004207}
+  m_Layer: 5
+  m_Name: TextContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &8336618208298004207
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 172805746357512194}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 6168756843942781341}
+  m_Father: {fileID: 6168756845117022959}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 250, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &6168756843942781340
 GameObject:
   m_ObjectHideFlags: 0
@@ -30,13 +66,13 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 6168756845117022959}
+  m_Father: {fileID: 8336618208298004207}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6168756843942781343
 CanvasRenderer:
@@ -68,15 +104,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: 10
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5b4235eabcafa5845967fc0aa5c8c315, type: 2}
-  m_sharedMaterial: {fileID: -8742106708504377679, guid: 5b4235eabcafa5845967fc0aa5c8c315, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 70f21b71572eb8146b43d3aa6b8a7641, type: 2}
+  m_sharedMaterial: {fileID: 8472797476673822111, guid: 70f21b71572eb8146b43d3aa6b8a7641, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278716637
-  m_fontColor: {r: 0.8679245, g: 0.030022444, b: 0.030022444, a: 1}
+    rgba: 4284981581
+  m_fontColor: {r: 0.3019608, g: 0.6313726, b: 0.40392157, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -93,8 +129,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 17
-  m_fontSizeBase: 17
+  m_fontSize: 32
+  m_fontSizeBase: 32
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -159,10 +195,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6168756845117022959}
-  - component: {fileID: 6168756845117022952}
+  - component: {fileID: 3746511036673065294}
   - component: {fileID: 6168756845117022953}
   m_Layer: 5
-  m_Name: DamagePopUp
+  m_Name: MoneyPopUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -179,16 +215,16 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 6168756843942781341}
+  - {fileID: 8336618208298004207}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 30}
+  m_SizeDelta: {x: 200, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &6168756845117022952
+--- !u!114 &3746511036673065294
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -197,10 +233,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6168756845117022958}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7040587a2b24014a5ded014861f462e, type: 3}
+  m_Script: {fileID: 11500000, guid: c28ebaefa21d401191cd63298ab788d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageText: {fileID: 6168756843942781342}
+  moneyText: {fileID: 6168756843942781342}
 --- !u!95 &6168756845117022953
 Animator:
   serializedVersion: 3
@@ -211,7 +247,7 @@ Animator:
   m_GameObject: {fileID: 6168756845117022958}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: e7a6735b4890afa4ca2bc88becf20568, type: 2}
+  m_Controller: {fileID: 9100000, guid: 2d16bc5182a42b0418077cd3916e0e9f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
