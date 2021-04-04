@@ -5,24 +5,15 @@ using UnityEngine;
 
 public class PlayerUnitSpawner : MonoBehaviour
 {
-    [SerializeField] private UnitSpawner _unitSpawner;
+    [SerializeField] protected UnitSpawner _unitSpawner;
     [SerializeField] private List<Transform> _spawnPoints;
-    
-    [Header("Team")]
-    [SerializeField] private Material _playerColor;
-
-    private Team _team;
+    [SerializeField] protected Team _team;
 
     private int _soldierCost = 100;
     private int _tankCost = 400;
 
     private static string NOT_ENOUGH_MONEY_STRING = "Not enough money to spawn unit.";
 
-    void Start()
-    {
-        _team = new Team(0, _playerColor);
-    }
-    
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -36,7 +27,7 @@ public class PlayerUnitSpawner : MonoBehaviour
         }
     }
     
-    public void SpawnTank()
+    public virtual void SpawnTank()
     {
         bool success = PlayerMoneyManager.Instance.Remove(_tankCost);
         if (!success)
@@ -48,7 +39,7 @@ public class PlayerUnitSpawner : MonoBehaviour
         PlayerUnitsManager.Instance.Register(unit);
     }
 
-    public void SpawnSoldier()
+    public virtual void SpawnSoldier()
     {
         bool success = PlayerMoneyManager.Instance.Remove(_soldierCost);
         if (!success)
@@ -60,7 +51,7 @@ public class PlayerUnitSpawner : MonoBehaviour
         PlayerUnitsManager.Instance.Register(unit);
     }
 
-    private Transform GetSpawnPoint()
+    protected Transform GetSpawnPoint()
     {
         int index = Random.Range(0, _spawnPoints.Count);
         return _spawnPoints[index];

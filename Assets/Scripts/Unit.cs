@@ -12,6 +12,7 @@ public abstract class Unit : Attackable
     [SerializeField] private FloatingHealthBar floatingHealthBar;
     
     public Team Team => _team;
+    public bool HasTargetSet => _attackTarget != null;
     
     protected Collider _collider;
     protected NavMeshAgent _navMeshAgent;

@@ -8,23 +8,6 @@ public class UnitSpawner : MonoBehaviour
     [SerializeField] private Unit _soldierPrefab;
     [SerializeField] private Unit _tankPrefab;
 
-    [Header("Teams")]
-    [SerializeField] private Material _enemyColor;
-    
-    void Update()
-    {
-        // TODO: USE POOL FOR UNITS.
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            SpawnTank(new Team(1, _enemyColor), transform.position).gameObject.AddComponent<AIUnitController>();
-        }
-        
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            SpawnSoldier(new Team(1, _enemyColor), transform.position).gameObject.AddComponent<AIUnitController>();;
-        }
-    }
-
     public Unit SpawnTank(Team team, Vector3 position)
     {
         Unit unit = SimplePool.Spawn(_tankPrefab.gameObject, position, transform.rotation).GetComponent<Unit>();

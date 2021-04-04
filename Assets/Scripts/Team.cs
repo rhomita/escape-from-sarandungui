@@ -1,14 +1,10 @@
 ﻿using System;
 using UnityEngine;
 
+[Serializable]
 public class Team
 {
-    public int Number { get; }
-    public Material Material { get; }
+    public int Number;
+    public Material Material;
 
-    public Team(int number, Material material)
-    {
-        Number = number;
-        Material = material;
-    }
 }

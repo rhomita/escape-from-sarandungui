@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerUnitsManager : MonoBehaviour
 {
+    [SerializeField] private LayerMask _unitsMask;
+    public LayerMask UnitsMask => _unitsMask;
     public List<Unit> Units => _units;
 
     private List<Unit> _units;

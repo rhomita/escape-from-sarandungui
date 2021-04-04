@@ -16,8 +16,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Camera _camera;
     [SerializeField] private Canvas _canvas;
     [SerializeField] private Rocket _rocket;
+    [SerializeField] private Texture2D _cursor;
 
     public Camera Camera => _camera;
     public Canvas Canvas => _canvas;
     public Rocket Rocket => _rocket;
+
+    void Start()
+    {
+        Cursor.SetCursor(_cursor, Vector2.zero, CursorMode.Auto);
+    }
 }

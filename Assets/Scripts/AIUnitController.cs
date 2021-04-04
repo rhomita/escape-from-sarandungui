@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class AIUnitController : MonoBehaviour
@@ -7,9 +8,8 @@ public class AIUnitController : MonoBehaviour
     private Unit _unit;
     private Rocket _rocketTarget;
 
-    private Unit _attackableUnit;
     private float _radiusToFindAttackableUnit = 20f;
-    private float _timeToFindAttackableUnit = 5f;
+    private float _timeToFindAttackableUnit = 3f;
     private float _timeToFindAttackableUnitCooldown = 0f;
     private LayerMask _attackableLayerMask;
 
@@ -23,7 +23,7 @@ public class AIUnitController : MonoBehaviour
     {
         _rocketTarget = GameManager.Instance.Rocket;
         _timeToFindAttackableUnit = 0f;
-        _attackableLayerMask = LayerMask.NameToLayer("Attackable");
+        _attackableLayerMask = PlayerUnitsManager.Instance.UnitsMask;
     }
 
     void Update()
@@ -33,7 +33,9 @@ public class AIUnitController : MonoBehaviour
             _timeToFindAttackableUnitCooldown -= Time.deltaTime;
         }
 
-        if (_attackableUnit == null)
+        FindAttackableUnit();
+        
+        if (!_unit.HasTargetSet)
         {
             _unit.SetAttackTarget(_rocketTarget);
         }
@@ -42,8 +44,30 @@ public class AIUnitController : MonoBehaviour
     private void FindAttackableUnit()
     {
         if (_timeToFindAttackableUnitCooldown > 0) return;
-        Collider[] colliders = Physics.OverlapSphere(transform.position, _radiusToFindAttackableUnit, _attackableLayerMask);
-        Debug.Log(colliders);
         _timeToFindAttackableUnitCooldown = _timeToFindAttackableUnit;
+        Collider[] colliders = Physics.OverlapSphere(transform.position, _radiusToFindAttackableUnit, _attackableLayerMask);
+        if (colliders.Length <= 1) return;
+
+        float maxDistance = float.MaxValue;
+        Unit attackableUnit = null;
+        Debug.Log(colliders.Length);
+        foreach (Collider _collider in colliders)
+        {
+            if (_collider.transform == transform) continue; // Skip self.
+
+            float distance = Vector3.SqrMagnitude(_collider.transform.position - transform.position);
+            if (distance <= maxDistance && _collider.TryGetComponent(out Unit unit))
+            {
+                if (unit.Team.Number == _unit.Team.Number) continue;
+
+                maxDistance = distance;
+                attackableUnit = unit;
+            }
+        }
+
+        if (attackableUnit != null)
+        {
+            _unit.SetAttackTarget(attackableUnit);
+        }
     }
 }

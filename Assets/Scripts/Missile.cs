@@ -17,6 +17,7 @@ public class Missile : Projectile
     protected override void OnUpdate()
     {
         float force = Mathf.Lerp(_minSpeed, _maxSpeed, _livingTime);
+        force = Mathf.Clamp(force, _minSpeed, _maxSpeed);
         _rigidbody.AddForce(transform.forward * force);
     }
 
