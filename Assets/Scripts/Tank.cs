@@ -42,8 +42,8 @@ public class Tank : Unit
 
     protected override void OnUpdate()
     {
-        bool hasTargetSet = _unitTarget != null;
-        Vector3 destination = hasTargetSet ? _unitTarget.transform.position : _navMeshAgent.destination;
+        bool hasTargetSet = _attackTarget != null;
+        Vector3 destination = hasTargetSet ? _attackTarget.transform.position : _navMeshAgent.destination;
         destination.y = 0;
         Vector3 directionToTarget = destination - transform.position;
         float angle = Vector3.Angle(transform.forward, directionToTarget);

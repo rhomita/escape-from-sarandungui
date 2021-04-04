@@ -1,7 +1,7 @@
 ﻿using UI;
 using UnityEngine;
 
-public class Rocket : MonoBehaviour
+public class Rocket : Attackable
 {
     [SerializeField] private Transform parts;
     [SerializeField] private ProgressBar _progressBar;
@@ -55,12 +55,6 @@ public class Rocket : MonoBehaviour
         UpdateProgress();
     }
 
-    void TakeDamage(float _damage)
-    {
-        _progress -= _damage / _damageProgressLossFactor;
-        UpdateProgress();
-    }
-
     private void UpdateProgress()
     {
         int partsToEnable = (int) Mathf.Floor(_progress / _progressPerPart);
@@ -77,5 +71,16 @@ public class Rocket : MonoBehaviour
         }
 
         _progressBar.SetProgress(_progress);
+    }
+
+    public override bool IsDead()
+    {
+        return false;
+    }
+
+    public override void TakeDamage(int damage, Vector3 damageForce)
+    {
+        _progress -= damage / _damageProgressLossFactor;
+        UpdateProgress();
     }
 }

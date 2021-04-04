@@ -16,12 +16,12 @@ public class UnitSpawner : MonoBehaviour
         // TODO: USE POOL FOR UNITS.
         if (Input.GetKeyDown(KeyCode.R))
         {
-            SpawnTank(new Team(1, _enemyColor), transform.position);
+            SpawnTank(new Team(1, _enemyColor), transform.position).gameObject.AddComponent<AIUnitController>();
         }
         
         if (Input.GetKeyDown(KeyCode.T))
         {
-            SpawnSoldier(new Team(1, _enemyColor), transform.position);
+            SpawnSoldier(new Team(1, _enemyColor), transform.position).gameObject.AddComponent<AIUnitController>();;
         }
     }
 

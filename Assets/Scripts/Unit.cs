@@ -5,20 +5,17 @@ using UI;
 using UnityEngine;
 using UnityEngine.AI;
 
-public abstract class Unit : MonoBehaviour
+public abstract class Unit : Attackable
 {
     [SerializeField] private GameObject _damagePopupPrefab;
     [SerializeField] private GameObject _selection;
     [SerializeField] private FloatingHealthBar floatingHealthBar;
     
-    public delegate void OnKilledEvent();
-    public OnKilledEvent OnKilled;
-    public bool IsDead => _health <= 0;
     public Team Team => _team;
     
     protected Collider _collider;
     protected NavMeshAgent _navMeshAgent;
-    protected Unit _unitTarget;
+    protected Attackable _attackTarget;
 
     protected float _maxHealth;
     protected float _minAttackRange;
@@ -57,7 +54,7 @@ public abstract class Unit : MonoBehaviour
         _attackCooldownTimer = 0;
         _collider.enabled = true;
         _navMeshAgent.enabled = true;
-        _unitTarget = null;
+        _attackTarget = null;
         _selection.SetActive(false);
         floatingHealthBar.SetMaxHealth(_health);
         floatingHealthBar.SetHealth(_health);
@@ -81,33 +78,33 @@ public abstract class Unit : MonoBehaviour
 
     public void MoveTo(Vector3 position)
     {
-        if (IsDead) return;
+        if (IsDead()) return;
+
         _navMeshAgent.speed = _speed;
         RemoveTarget();
         SetDestination(position);
     }
 
-    public void SetAttackUnit(Unit unitTarget)
+    public void SetAttackTarget(Attackable attackTarget)
     {
-        if (IsDead) return;
-        if (unitTarget.IsDead) return;
+        if (IsDead() || attackTarget.IsDead()) return;
+
         RemoveTarget();
-        _unitTarget = unitTarget;
-        _unitTarget.OnKilled += OnTargetKilled;
-        _navMeshAgent.isStopped = true;
+        _attackTarget = attackTarget;
+        _attackTarget.OnKilled += OnTargetKilled;
     }
 
     public void RemoveTarget()
     {
-        if (IsDead) return;
-        if (_unitTarget == null) return;
-        _unitTarget.OnKilled -= OnTargetKilled;
-        _unitTarget = null;
+        if (IsDead()) return;
+        if (_attackTarget == null) return;
+        _attackTarget.OnKilled -= OnTargetKilled;
+        _attackTarget = null;
     }
     
     public void OnTargetKilled()
     {
-        _unitTarget = null;
+        _attackTarget = null;
     }
 
     protected void Shoot()
@@ -119,8 +116,9 @@ public abstract class Unit : MonoBehaviour
         }
     }
 
-    protected virtual void Kill(Vector3 damageForce)
+    protected override void Kill(Vector3 damageForce)
     {
+        base.Kill(damageForce);
         OnKilled?.Invoke();
         _collider.enabled = false;
         _navMeshAgent.enabled = false;
@@ -143,19 +141,21 @@ public abstract class Unit : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * _navMeshAgent.angularSpeed);
     }
     
-    public void TakeDamage(int damage, Vector3 damageForce)
+    public override void TakeDamage(int damage, Vector3 damageForce)
     {
-        if (IsDead) return;
+        if (IsDead()) return;
 
         DamagePopup damagePopup = SimplePool.Spawn(_damagePopupPrefab, Vector3.zero, Quaternion.identity).GetComponent<DamagePopup>();
         damagePopup.Show(transform.position, damage);
         
         _health -= damage;
         floatingHealthBar.SetHealth(_health);
-        if (IsDead)
+        if (IsDead())
         {
             Kill(damageForce);
+            return;
         }
+        OnTakeDamage?.Invoke();
     }
 
     public void Select()
@@ -172,5 +172,10 @@ public abstract class Unit : MonoBehaviour
     {
         yield return new WaitForSeconds(_timeToDespawnAfterKilled);
         SimplePool.Despawn(this.gameObject);
+    }
+
+    public override bool IsDead()
+    {
+        return _health <= 0;
     }
 }

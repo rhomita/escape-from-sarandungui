@@ -4,15 +4,13 @@ using UnityEngine;
 public class Soldier : Unit
 {
     [SerializeField] private Animator _animator;
-    
-    [Header("Bullet")]
-    [SerializeField] private GameObject _bulletPrefab;
+
+    [Header("Bullet")] [SerializeField] private GameObject _bulletPrefab;
     [SerializeField] private Transform _bulletSpawnPoint;
 
-    [Header("Mesh")] 
-    [SerializeField] private SkinnedMeshRenderer _bodyMesh;
+    [Header("Mesh")] [SerializeField] private SkinnedMeshRenderer _bodyMesh;
     [SerializeField] private MeshRenderer _weaponMesh;
-    
+
     private Ragdoll _ragdoll;
 
     protected float _attackSpeedDecrease;
@@ -38,7 +36,7 @@ public class Soldier : Unit
         _angleToShot = 7;
         _attackSpeedDecrease = 2f;
         _maxHealth = 100f;
-        
+
         base.Awake();
     }
 
@@ -51,9 +49,9 @@ public class Soldier : Unit
     protected override void OnUpdate()
     {
         bool isShooting = false;
-        if (_unitTarget != null)
+        if (_attackTarget != null)
         {
-            Vector3 targetPosition = _unitTarget.transform.position;
+            Vector3 targetPosition = _attackTarget.transform.position;
             Vector3 directionToTarget = targetPosition - transform.position;
 
             directionToTarget.y = transform.position.y;
@@ -62,34 +60,35 @@ public class Soldier : Unit
 
             float sqrDistance = Vector3.SqrMagnitude(directionToTarget);
             isShooting = sqrDistance < _maxAttackRange && inFront;
-            
+
             if (sqrDistance < _minAttackRange)
             {
-                RotateTowardsPosition(_unitTarget.transform.position);
+                RotateTowardsPosition(_attackTarget.transform.position);
                 _navMeshAgent.isStopped = true;
             }
             else
             {
-                _navMeshAgent.speed = _speed - _attackSpeedDecrease;
-                SetDestination(_unitTarget.transform.position);
+                _navMeshAgent.speed = isShooting ? _speed - _attackSpeedDecrease : _speed;
+                SetDestination(targetPosition);
             }
-            
+
             if (isShooting) Shoot();
         }
-        
+
         bool isRunning = _navMeshAgent.velocity.magnitude > 0.1f;
         if (isRunning)
         {
             RotateTowardsPosition(_navMeshAgent.destination);
         }
-        
+
         _animator.SetBool("isRunning", isRunning);
         _animator.SetBool("isShooting", isShooting);
     }
 
     protected override void OnShoot()
     {
-        Bullet bullet = SimplePool.Spawn(_bulletPrefab, _bulletSpawnPoint.position, _bulletSpawnPoint.rotation).GetComponent<Bullet>();
+        Bullet bullet = SimplePool.Spawn(_bulletPrefab, _bulletSpawnPoint.position, _bulletSpawnPoint.rotation)
+            .GetComponent<Bullet>();
         bullet.Init(this);
     }
 
@@ -99,5 +98,4 @@ public class Soldier : Unit
         _ragdoll.SetEnabled(true);
         _ragdoll.AddImpulse(damageForce);
     }
-
 }

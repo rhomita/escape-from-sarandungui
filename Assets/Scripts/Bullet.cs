@@ -19,12 +19,15 @@ public class Bullet : Projectile
     private void OnTriggerEnter(Collider collider)
     {
         if (!_initialized) return;
-        if (collider.TryGetComponent(out Unit unit))
+        if (collider.TryGetComponent(out Attackable attackable))
         {
-            if (unit.Team.Number == _team.Number) return;
+            if (collider.TryGetComponent(out Unit unit))
+            {
+                if (unit.Team.Number == _team.Number) return;
+            }
             int damage = GetDamage();
             Vector3 direction = collider.transform.position - transform.position;
-            unit.TakeDamage(damage, direction.normalized * _damageForce);
+            attackable.TakeDamage(damage, direction.normalized * _damageForce);
             SimplePool.Despawn(gameObject);
         }
     }

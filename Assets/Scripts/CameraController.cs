@@ -111,7 +111,7 @@ public class CameraController : MonoBehaviour
                 {
                     foreach (Unit unit in _selectedUnits)
                     {
-                        unit.SetAttackUnit(_unit);
+                        unit.SetAttackTarget(_unit);
                     }
                 }
                 return;

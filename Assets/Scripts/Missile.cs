@@ -27,12 +27,15 @@ public class Missile : Projectile
         Collider[] colliders = Physics.OverlapSphere(transform.position, _explosionRadius);
         foreach (Collider _collider in colliders)
         {
-            if (_collider.TryGetComponent(out Unit unit))
+            if (_collider.TryGetComponent(out Attackable attackable))
             {
-                if (unit.Team.Number == _team.Number) continue;
+                if (attackable.TryGetComponent(out Unit unit))
+                {
+                    if (unit.Team.Number == _team.Number) continue;    
+                }
                 int damage = GetDamage();
                 Vector3 direction = (collider.transform.position - transform.position).normalized + (Vector3.up * _damageUpForce);
-                unit.TakeDamage(damage, direction * _damageForce);
+                attackable.TakeDamage(damage, direction * _damageForce);
                 SimplePool.Despawn(gameObject);    
             }
         }
