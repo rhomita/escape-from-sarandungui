@@ -15,7 +15,9 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private Camera _camera;
     [SerializeField] private Canvas _canvas;
+    [SerializeField] private Rocket _rocket;
 
     public Camera Camera => _camera;
     public Canvas Canvas => _canvas;
+    public Rocket Rocket => _rocket;
 }

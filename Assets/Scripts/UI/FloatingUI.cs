@@ -2,12 +2,12 @@
 
 namespace UI
 {
-    public class FloatingUI : MonoBehaviour
+    public abstract class FloatingUI : MonoBehaviour
     {
         [SerializeField] private bool _lookAtCamera = false;
         private Transform _camera;
     
-        void Start()
+        protected virtual void Start()
         {
             _camera = GameManager.Instance.Camera.transform;
         }
