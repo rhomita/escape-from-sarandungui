@@ -25,9 +25,9 @@ public abstract class Unit : Attackable
     protected float _speed;
     protected Team _team;
     protected float _timeToDespawnAfterKilled = 8f;
+    protected float _attackCooldownTime = 1;
 
     private float _attackCooldownTimer;
-    private static float ATTACK_COOLDOWN_TIME = 1;
     
     // Stats
     private float _health;
@@ -113,7 +113,7 @@ public abstract class Unit : Attackable
     {
         if (_attackCooldownTimer <= 0)
         {
-            _attackCooldownTimer = ATTACK_COOLDOWN_TIME;
+            _attackCooldownTimer = _attackCooldownTime;
             OnShoot();
         }
     }

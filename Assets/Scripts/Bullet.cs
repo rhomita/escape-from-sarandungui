@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class Bullet : Projectile
 {
-    private float _speed = 6f;
-    private float _damageForce = 70f;
+    private float _speed = 13f;
+    private float _damageForce = 85f;
     
     protected override void OnInit()
     {

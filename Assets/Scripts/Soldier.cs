@@ -36,6 +36,7 @@ public class Soldier : Unit
         _angleToShot = 7;
         _attackSpeedDecrease = 2f;
         _maxHealth = 100f;
+        _attackCooldownTime = 1;
 
         base.Awake();
     }

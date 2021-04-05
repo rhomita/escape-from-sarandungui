@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class Missile : Projectile
 {
-    private float _minSpeed = 1.6f;
-    private float _maxSpeed = 8f;
+    private float _minSpeed = 2.2f;
+    private float _maxSpeed = 4f;
     private float _damageForce = 15f;
     private float _damageUpForce = 5f;
     private float _explosionRadius = 2f;

@@ -6,14 +6,19 @@ public class EnemySpawner : PlayerUnitSpawner
 {
     [SerializeField] private List<Transform> _spawnPoints;
 
-    private float _timeToSpawnTank = 30f;
-    private float _timeToSpawnSoldier = 20f;
-
-    private int _quantitySoldiers = 3;
-    private int _quantityTanks = 1;
+    private float _timeToSpawnTank;
+    private float _timeToSpawnSoldier;
+    private int _quantitySoldiers;
+    private int _quantityTanks;
 
     void Start()
     {
+        Difficulty difficulty = DifficultyManager.Instance.Difficulty;
+        _timeToSpawnTank = difficulty.TimeToSpawnTank;
+        _timeToSpawnSoldier = difficulty.TimeToSpawnSoldier;
+        _quantitySoldiers = difficulty.QuantitySoldiers;
+        _quantityTanks = difficulty.QuantityTanks;
+
         InvokeRepeating("SpawnTank", _timeToSpawnTank, _timeToSpawnTank);
         InvokeRepeating("SpawnSoldier", _timeToSpawnSoldier, _timeToSpawnSoldier);
     }
@@ -24,6 +29,7 @@ public class EnemySpawner : PlayerUnitSpawner
 
     public override void SpawnTank()
     {
+        if (GameManager.Instance.Finished) return;
         for (int i = 0; i < _quantityTanks; i++)
         {
             Unit unit = _unitSpawner.SpawnTank(_team, GetSpawnPoint().position);
@@ -33,13 +39,14 @@ public class EnemySpawner : PlayerUnitSpawner
 
     public override void SpawnSoldier()
     {
+        if (GameManager.Instance.Finished) return;
         for (int i = 0; i < _quantitySoldiers; i++)
         {
             Unit unit = _unitSpawner.SpawnSoldier(_team, GetSpawnPoint().position);
             unit.gameObject.AddComponent<AIUnitController>();
         }
     }
-    
+
     protected Transform GetSpawnPoint()
     {
         int index = Random.Range(0, _spawnPoints.Count);

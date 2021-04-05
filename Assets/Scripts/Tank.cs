@@ -12,8 +12,10 @@ public class Tank : Unit
     [Header("Mesh")] 
     [SerializeField] private List<MeshRenderer> _cannonMeshes;
     [SerializeField] private MeshRenderer _tankMesh;
+
+    private Animator _animator;
     
-    private float _minAngleToMoveForward = 9f;
+    private float _minAngleToMoveForward = 15f;
     private float _cannonRotateSpeed = 4f;
 
     public override void InitTeam(Team team)
@@ -33,9 +35,11 @@ public class Tank : Unit
 
     protected override void Awake()
     {
+        _animator = transform.GetComponent<Animator>();
         _maxAttackRange = 40f;
         _angleToShot = 1.5f;
         _maxHealth = 400f;
+        _attackCooldownTime = 2f;
 
         base.Awake();
     }
@@ -83,12 +87,14 @@ public class Tank : Unit
         }
         else
         {
+            RotateTowardsPosition(destination);
             SetDestination(destination);
         }
     }
 
     protected override void OnShoot()
     {
+        _animator.SetTrigger("Shoot");
         Missile missile = SimplePool.Spawn(_missilePrefab, _cannonSpawnPoint.position, _cannonSpawnPoint.rotation).GetComponent<Missile>();
         missile.Init(this);
     }

@@ -117,6 +117,30 @@ public class Rocket : Attackable
 
     private IEnumerator Explode()
     {
+        enabled = false;
+        _progressBar.gameObject.SetActive(false);
+        _engineers.SetActive(false);
+        
+        yield return new WaitForSeconds(1f);
+        ParticlesManager.Instance.Spawn("explosion", transform.position + Vector3.up);
+        
+        yield return new WaitForSeconds(1f);
+        ParticlesManager.Instance.Spawn("explosion", transform.position + Vector3.up * 1.5f);
+        
+        yield return new WaitForSeconds(0.5f);
+        ParticlesManager.Instance.Spawn("explosion", transform.position + Vector3.up * 1.3f);
+        
+        yield return new WaitForSeconds(0.3f);
+        ParticlesManager.Instance.Spawn("explosion", transform.position + Vector3.up * 1.3f);
+        
+        yield return new WaitForSeconds(0.5f);
+        ParticlesManager.Instance.Spawn("explosion", transform.position + Vector3.up * 1.7f);
+        
+        yield return new WaitForSeconds(1.5f);
+        ParticlesManager.Instance.Spawn("explosion", transform.position + Vector3.up);
+        ParticlesManager.Instance.Spawn("explosion", transform.position + Vector3.up * 1.5f);
+        ParticlesManager.Instance.Spawn("explosion", transform.position + Vector3.up * 3f);
+        
         yield return null;
     }
 }
