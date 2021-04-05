@@ -21,6 +21,7 @@ public class EnemySpawner : PlayerUnitSpawner
 
         InvokeRepeating("SpawnTank", _timeToSpawnTank, _timeToSpawnTank);
         InvokeRepeating("SpawnSoldier", _timeToSpawnSoldier, _timeToSpawnSoldier);
+        InvokeRepeating("IncreaseQuantity", difficulty.TimeToMultiplyQuantity,difficulty.TimeToMultiplyQuantity);
     }
 
     void Update()
@@ -47,9 +48,17 @@ public class EnemySpawner : PlayerUnitSpawner
         }
     }
 
+    private void IncreaseQuantity()
+    {
+        Difficulty difficulty = DifficultyManager.Instance.Difficulty;
+        _quantitySoldiers += difficulty.QuantitySoldiers;
+        _quantityTanks += difficulty.QuantityTanks;
+    }
+    
     protected Transform GetSpawnPoint()
     {
         int index = Random.Range(0, _spawnPoints.Count);
         return _spawnPoints[index];
     }
+    
 }

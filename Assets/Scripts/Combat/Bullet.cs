@@ -33,12 +33,12 @@ public class Bullet : Projectile
             if (collider.TryGetComponent(out Unit unit))
             {
                 if (unit.Team.Number == _owner.Team.Number) return;
+                ParticlesManager.Instance.Spawn("blood", collider.transform.position);
             }
             int damage = GetDamage();
             Vector3 damageForce = (collider.transform.position - transform.position).normalized * _damageForce +
                                   Vector3.up * _damageUpForce;
             attackable.TakeDamage(damage, damageForce, _owner);
-            ParticlesManager.Instance.Spawn("blood", collider.transform.position);
             SimplePool.Despawn(gameObject);
         }
     }

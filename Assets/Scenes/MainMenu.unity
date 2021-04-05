@@ -2448,8 +2448,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2014960335}
-        m_TargetAssemblyTypeName: DifficultyManager, Assembly-CSharp
+      - m_Target: {fileID: 295028676}
+        m_TargetAssemblyTypeName: UI.MenuUI, Assembly-CSharp
         m_MethodName: SelectEasy
         m_Mode: 1
         m_Arguments:
@@ -10231,7 +10231,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: -4261747514568247064, guid: fa10129d104bc1643a9893a2347a605a, type: 2}
   m_audioClip: {fileID: 8300000, guid: d8e5a43fabf4d05499343044b249b8a9, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.07
+  m_Volume: 0.05
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -14205,8 +14205,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2014960335}
-        m_TargetAssemblyTypeName: DifficultyManager, Assembly-CSharp
+      - m_Target: {fileID: 295028676}
+        m_TargetAssemblyTypeName: UI.MenuUI, Assembly-CSharp
         m_MethodName: SelectNormal
         m_Mode: 1
         m_Arguments:
@@ -17582,8 +17582,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2014960335}
-        m_TargetAssemblyTypeName: DifficultyManager, Assembly-CSharp
+      - m_Target: {fileID: 295028676}
+        m_TargetAssemblyTypeName: UI.MenuUI, Assembly-CSharp
         m_MethodName: SelectHard
         m_Mode: 1
         m_Arguments:

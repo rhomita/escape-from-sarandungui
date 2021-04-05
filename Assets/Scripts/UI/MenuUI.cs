@@ -39,5 +39,20 @@ namespace UI
         {
             Application.Quit();
         }
+        
+        public void SelectEasy()
+        {
+            DifficultyManager.Instance.SelectEasy();
+        }
+
+        public void SelectNormal()
+        {
+            DifficultyManager.Instance.SelectNormal();
+        }
+
+        public void SelectHard()
+        {
+            DifficultyManager.Instance.SelectHard();
+        }
     }
 }

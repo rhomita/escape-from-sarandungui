@@ -24,6 +24,7 @@ public class DifficultyManager : MonoBehaviour
         _easyDifficulty.TimeToSpawnSoldier = 30f;
         _easyDifficulty.QuantitySoldiers = 3;
         _easyDifficulty.QuantityTanks = 1;
+        _easyDifficulty.TimeToMultiplyQuantity = 180;
 
         _normalDifficulty = new Difficulty();
         _normalDifficulty.StartingMoney = 1500;
@@ -31,6 +32,7 @@ public class DifficultyManager : MonoBehaviour
         _normalDifficulty.TimeToSpawnSoldier = 25f;
         _normalDifficulty.QuantitySoldiers = 3;
         _normalDifficulty.QuantityTanks = 1;
+        _normalDifficulty.TimeToMultiplyQuantity = 90;
 
         _hardDifficulty = new Difficulty();
         _hardDifficulty.StartingMoney = 1000;
@@ -38,6 +40,7 @@ public class DifficultyManager : MonoBehaviour
         _hardDifficulty.TimeToSpawnSoldier = 20f;
         _hardDifficulty.QuantitySoldiers = 4;
         _hardDifficulty.QuantityTanks = 1;
+        _hardDifficulty.TimeToMultiplyQuantity = 60;
 
         Difficulty = _easyDifficulty;
     }

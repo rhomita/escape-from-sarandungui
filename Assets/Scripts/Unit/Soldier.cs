@@ -57,6 +57,7 @@ public class Soldier : Unit
     {
         base.OnEnable();
         _ragdoll.SetEnabled(false);
+        _animator.enabled = true;
     }
 
     protected override void OnUpdate()
@@ -118,6 +119,7 @@ public class Soldier : Unit
         {
             _dieSound.Play();
         }
+        _animator.enabled = false;
         _ragdoll.SetEnabled(true);
         _ragdoll.AddImpulse(damageForce);
     }
