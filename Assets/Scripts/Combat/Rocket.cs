@@ -1,6 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UI;
 using UnityEngine;
+using Util;
+using Random = UnityEngine.Random;
 
 public class Rocket : Attackable
 {
@@ -10,6 +13,10 @@ public class Rocket : Attackable
     [Header("End")]
     [SerializeField] private GameObject _fireParticles;
     [SerializeField] private GameObject _engineers;
+    
+    [Header("SFX")]
+    [SerializeField] private SoundEffect _launchSound;
+    [SerializeField] private SoundEffect _impactSound;
 
     private float _progress = 0f;
     private float _minRandomProgress = 0.1f;
@@ -94,6 +101,7 @@ public class Rocket : Attackable
     private IEnumerator Launch()
     {
         enabled = false;
+        _launchSound.Play();
         _progressBar.gameObject.SetActive(false);
         _fireParticles.SetActive(true);
         _engineers.SetActive(false);
@@ -142,5 +150,13 @@ public class Rocket : Attackable
         ParticlesManager.Instance.Spawn("explosion", transform.position + Vector3.up * 3f);
         
         yield return null;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent(out Projectile projectile))
+        {
+            _impactSound.Play();
+        }
     }
 }

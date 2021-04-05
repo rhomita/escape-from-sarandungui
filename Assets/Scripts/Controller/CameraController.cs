@@ -1,13 +1,11 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UI;
     
 public class CameraController : MonoBehaviour
 {
     [SerializeField] private RectTransform _selectionPanel;
-
+    
     private float _raycastDistance = 300;
     private Camera _cam;
     private HashSet<Unit> _selectedUnits;

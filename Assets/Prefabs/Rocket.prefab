@@ -1,5 +1,86 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &17456802754460538
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4554110797389921177}
+  m_Layer: 0
+  m_Name: SFX
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4554110797389921177
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 17456802754460538}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 3621980500417242301}
+  - {fileID: 4317155131817689381}
+  m_Father: {fileID: 4795563255829183899}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3373061847618164023
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3621980500417242301}
+  - component: {fileID: 1339415676943418198}
+  m_Layer: 0
+  m_Name: Thruster
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3621980500417242301
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3373061847618164023}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4554110797389921177}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1339415676943418198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3373061847618164023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8a426fbb83b4578a6305da84b702626, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioMixerGroup: {fileID: 2334576026213446970, guid: fa10129d104bc1643a9893a2347a605a, type: 2}
+  _clips:
+  - {fileID: 8300000, guid: 15d7cc06e12efe048a56d658757d9ee8, type: 3}
+  _volume: 1
+  _spatialBlend: 1
+  _playOnAwake: 0
 --- !u!1 &4795563255829183896
 GameObject:
   m_ObjectHideFlags: 0
@@ -34,6 +115,7 @@ Transform:
   - {fileID: 4795563255982788541}
   - {fileID: 4795563256488350649}
   - {fileID: 1326132154489801101}
+  - {fileID: 4554110797389921177}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -53,6 +135,8 @@ MonoBehaviour:
   _progressBar: {fileID: 7287553747515197141}
   _fireParticles: {fileID: 1326132154489801098}
   _engineers: {fileID: 4795563256488350654}
+  _launchSound: {fileID: 1339415676943418198}
+  _impactSound: {fileID: 7719214050717373747}
 --- !u!65 &4795563255829183898
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -378,6 +462,59 @@ Transform:
   m_Father: {fileID: 4795563255829183899}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6136814230550350242
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4317155131817689381}
+  - component: {fileID: 7719214050717373747}
+  m_Layer: 0
+  m_Name: Impact
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4317155131817689381
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6136814230550350242}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4554110797389921177}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7719214050717373747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6136814230550350242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8a426fbb83b4578a6305da84b702626, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioMixerGroup: {fileID: 2334576026213446970, guid: fa10129d104bc1643a9893a2347a605a, type: 2}
+  _clips:
+  - {fileID: 8300000, guid: aa970c2421b0b374d8a14877417f7bbd, type: 3}
+  - {fileID: 8300000, guid: f544deb79bffaf744aa1b781a28e90f3, type: 3}
+  - {fileID: 8300000, guid: a1e361f671658534b94e71bd8d148308, type: 3}
+  - {fileID: 8300000, guid: 836d2b6223194bd43a5910b485967dc6, type: 3}
+  - {fileID: 8300000, guid: 27948466467a46147b9d89261de90ff8, type: 3}
+  _volume: 1
+  _spatialBlend: 1
+  _playOnAwake: 0
 --- !u!1 &7287553747421315946
 GameObject:
   m_ObjectHideFlags: 0
@@ -980,14 +1117,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b4f3043936d63c45ae6849c29104521, type: 3}
---- !u!1 &1326132154489801098 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5830505055322838266, guid: 5b4f3043936d63c45ae6849c29104521, type: 3}
-  m_PrefabInstance: {fileID: 4795563256778694000}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1326132154489801101 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5830505055322838269, guid: 5b4f3043936d63c45ae6849c29104521, type: 3}
+  m_PrefabInstance: {fileID: 4795563256778694000}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1326132154489801098 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5830505055322838266, guid: 5b4f3043936d63c45ae6849c29104521, type: 3}
   m_PrefabInstance: {fileID: 4795563256778694000}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4795563256876727320

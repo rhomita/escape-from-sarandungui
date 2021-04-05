@@ -16,6 +16,10 @@ public class Tank : Unit
 
     [Header("SFX")] 
     [SerializeField] private SoundEffect _shootingSound;
+    [SerializeField] private SoundEffect _movingSound;
+    [SerializeField] private SoundEffect _rotateCannonSound;
+
+    [Header("Particles")] [SerializeField] private GameObject _fireParticles;
     
     private Animator _animator;
     
@@ -36,7 +40,19 @@ public class Tank : Unit
             meshRenderer.materials = materials;
         }
     }
+    
+    protected override void OnEnable()
+    {
+        _fireParticles.SetActive(false);
+        base.OnEnable();
+    }
 
+    protected override void Kill(Vector3 damageForce)
+    {
+        base.Kill(damageForce);
+        _fireParticles.SetActive(true);
+    }
+    
     protected override void Awake()
     {
         _animator = transform.GetComponent<Animator>();
@@ -58,6 +74,15 @@ public class Tank : Unit
         bool shouldRotateBeforeMove = angle > _minAngleToMoveForward;
 
         _navMeshAgent.isStopped = shouldRotateBeforeMove;
+        if (!_navMeshAgent.isStopped)
+        {
+            _rotateCannonSound.Stop();
+            _movingSound.Play();
+        }
+        else
+        {
+            _movingSound.Stop();
+        }
 
         if (hasTargetSet)
         {
@@ -85,7 +110,7 @@ public class Tank : Unit
             ResetCannonRotation();
         }
 
-        if (!_isMovingToASelectedPosition) return;
+        if (!_isMovingToASelectedPosition && !hasTargetSet) return;
         
         if (shouldRotateBeforeMove)
         {
@@ -100,6 +125,8 @@ public class Tank : Unit
 
     protected override void OnShoot()
     {
+        _movingSound.Stop();
+        _rotateCannonSound.Stop();
         _animator.SetTrigger("Shoot");
         _shootingSound.Play();
         Missile missile = SimplePool.Spawn(_missilePrefab, _cannonSpawnPoint.position, _cannonSpawnPoint.rotation).GetComponent<Missile>();
@@ -108,6 +135,7 @@ public class Tank : Unit
 
     private void RotateCannon(Vector3 position)
     {
+        _rotateCannonSound.Play();
         Vector3 direction = (position - _cannon.position).normalized;
         direction.y = 0;
         Quaternion rotation = Quaternion.LookRotation(direction);

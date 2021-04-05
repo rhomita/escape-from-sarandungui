@@ -28,6 +28,7 @@ public class Bullet : Projectile
             int damage = GetDamage();
             Vector3 direction = collider.transform.position - transform.position;
             attackable.TakeDamage(damage, direction.normalized * _damageForce, _owner);
+            ParticlesManager.Instance.Spawn("blood", collider.transform.position);
             SimplePool.Despawn(gameObject);
         }
     }

@@ -16,6 +16,10 @@ public class Soldier : Unit
 
     [Header("SFX")] 
     [SerializeField] private SoundEffect _footstepsSound;
+    [SerializeField] private SoundEffect _shootSound;
+    [SerializeField] private SoundEffect _dieSound;
+    [SerializeField] private SoundEffect _screamSound;
+    [SerializeField] private SoundEffect _impactSound;
 
     private Ragdoll _ragdoll;
 
@@ -43,6 +47,8 @@ public class Soldier : Unit
         _attackSpeedDecrease = 2f;
         _maxHealth = 100f;
         _attackCooldownTime = 1;
+
+        OnTakeDamage += () => _impactSound.Play();
 
         base.Awake();
     }
@@ -95,6 +101,7 @@ public class Soldier : Unit
 
     protected override void OnShoot()
     {
+        _shootSound.Play();
         Bullet bullet = SimplePool.Spawn(_bulletPrefab, _bulletSpawnPoint.position, _bulletSpawnPoint.rotation)
             .GetComponent<Bullet>();
         bullet.Init(this);
@@ -103,6 +110,14 @@ public class Soldier : Unit
     protected override void Kill(Vector3 damageForce)
     {
         base.Kill(damageForce);
+        if (damageForce.magnitude > 50f)
+        {
+            _screamSound.Play();
+        }
+        else
+        {
+            _dieSound.Play();
+        }
         _ragdoll.SetEnabled(true);
         _ragdoll.AddImpulse(damageForce);
     }

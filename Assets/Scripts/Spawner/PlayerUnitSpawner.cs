@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UI;
 using UnityEngine;
+using Util;
 
 public class PlayerUnitSpawner : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class PlayerUnitSpawner : MonoBehaviour
 
     [SerializeField] private Transform _tankSpawnPoint;
     [SerializeField] private Transform _soldierSpawnPoint;
+
+    [SerializeField] private SoundEffect _spawnSound;
 
     private int _soldierCost = 100;
     private int _tankCost = 400;
@@ -40,6 +43,7 @@ public class PlayerUnitSpawner : MonoBehaviour
         }
         Unit unit = _unitSpawner.SpawnTank(_team, _tankSpawnPoint.position);
         PlayerUnitsManager.Instance.Register(unit);
+        _spawnSound.Play();
     }
 
     public virtual void SpawnSoldier()
@@ -52,6 +56,7 @@ public class PlayerUnitSpawner : MonoBehaviour
         }
         Unit unit = _unitSpawner.SpawnSoldier(_team, _soldierSpawnPoint.position);
         PlayerUnitsManager.Instance.Register(unit);
+        _spawnSound.Play();
     }
     
     public void SpawnWorker()
@@ -63,5 +68,6 @@ public class PlayerUnitSpawner : MonoBehaviour
             return;
         }
         PlayerMoneyManager.Instance.AddWorker();
+        _spawnSound.Play();
     }
 }
