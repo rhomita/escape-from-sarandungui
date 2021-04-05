@@ -31,7 +31,7 @@ public class Rocket : Attackable
 
     void Update()
     {
-        if (GameManager.Instance.Finished) return;
+        if (GameManager.Instance.IsActive) return;
         if (_progress >= 100)
         {
             GameManager.Instance.Finish(true);

@@ -29,7 +29,7 @@ public class EnemySpawner : PlayerUnitSpawner
 
     public override void SpawnTank()
     {
-        if (GameManager.Instance.Finished) return;
+        if (GameManager.Instance.IsActive) return;
         for (int i = 0; i < _quantityTanks; i++)
         {
             Unit unit = _unitSpawner.SpawnTank(_team, GetSpawnPoint().position);
@@ -39,7 +39,7 @@ public class EnemySpawner : PlayerUnitSpawner
 
     public override void SpawnSoldier()
     {
-        if (GameManager.Instance.Finished) return;
+        if (GameManager.Instance.IsActive) return;
         for (int i = 0; i < _quantitySoldiers; i++)
         {
             Unit unit = _unitSpawner.SpawnSoldier(_team, GetSpawnPoint().position);
