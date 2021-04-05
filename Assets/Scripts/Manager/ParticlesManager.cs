@@ -7,20 +7,12 @@ public class ParticlesManager : MonoBehaviour
     [SerializeField] private GameObject _explosionParticles;
 
     private Dictionary<string, GameObject> _particles;
-    
+
     public static ParticlesManager Instance { get; private set; }
 
     void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        Instance = this;
     }
 
     void Start()

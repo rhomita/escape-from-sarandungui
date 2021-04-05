@@ -16,15 +16,7 @@ public class PlayerMoneyManager : MonoBehaviour
 
     void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        Instance = this;
     }
     
     void Start()
@@ -36,7 +28,7 @@ public class PlayerMoneyManager : MonoBehaviour
 
     private void Generate()
     {
-        if (GameManager.Instance.IsActive) return;
+        if (!GameManager.Instance.IsActive) return;
         int money = _moneyPerWorker * _workers;
         MoneyPopup moneyPopup = SimplePool.Spawn(_moneyPopupPrefab, Vector3.zero, Quaternion.identity).GetComponent<MoneyPopup>();
         moneyPopup.Show(_workersContainer.position, money);

@@ -37,7 +37,7 @@ public class CameraMovementController : MonoBehaviour
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         position.y += -scroll * _scrollSpeed * 100f * Time.deltaTime;
         position.y = Mathf.Clamp(position.y, _minHeight, _maxHeight);
-        _minimapCamera.orthographicSize = position.y;
+        // _minimapCamera.orthographicSize = position.y; // For now I comment it out. It might look better without zooming it.
 
         position.x = Mathf.Clamp(position.x, -_borderLimit.x, _borderLimit.x);
         position.z = Mathf.Clamp(position.z, -_borderLimit.y, _borderLimit.y);

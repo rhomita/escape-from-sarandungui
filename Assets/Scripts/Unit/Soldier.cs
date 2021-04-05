@@ -1,15 +1,21 @@
 ﻿using System;
 using UnityEngine;
+using Util;
 
 public class Soldier : Unit
 {
     [SerializeField] private Animator _animator;
 
-    [Header("Bullet")] [SerializeField] private GameObject _bulletPrefab;
+    [Header("Bullet")] 
+    [SerializeField] private GameObject _bulletPrefab;
     [SerializeField] private Transform _bulletSpawnPoint;
 
-    [Header("Mesh")] [SerializeField] private SkinnedMeshRenderer _bodyMesh;
+    [Header("Mesh")] 
+    [SerializeField] private SkinnedMeshRenderer _bodyMesh;
     [SerializeField] private MeshRenderer _weaponMesh;
+
+    [Header("SFX")] 
+    [SerializeField] private SoundEffect _footstepsSound;
 
     private Ragdoll _ragdoll;
 
@@ -33,7 +39,7 @@ public class Soldier : Unit
         _ragdoll = transform.GetComponent<Ragdoll>();
         _minAttackRange = 7f;
         _maxAttackRange = 24f;
-        _angleToShot = 7;
+        _angleToShot = 10f;
         _attackSpeedDecrease = 2f;
         _maxHealth = 100f;
         _attackCooldownTime = 1;
@@ -79,6 +85,7 @@ public class Soldier : Unit
         bool isRunning = _navMeshAgent.velocity.magnitude > 0.1f;
         if (isRunning)
         {
+            _footstepsSound.Play();
             RotateTowardsPosition(_navMeshAgent.destination);
         }
 

@@ -15010,7 +15010,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -12.699951, y: -9.700012}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 324.1974, y: 111.5395}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1398748351
 MonoBehaviour:
@@ -15032,7 +15032,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ESCAPE FROM SARASA
+  m_text: ESCAPE FROM SARANDUNGUI
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 70f21b71572eb8146b43d3aa6b8a7641, type: 2}
   m_sharedMaterial: {fileID: 8472797476673822111, guid: 70f21b71572eb8146b43d3aa6b8a7641, type: 2}
@@ -15095,7 +15095,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 1
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -25.64906, y: 0, z: 0, w: -85.840004}
+  m_margin: {x: 0.32395995, y: 0, z: 0, w: -0.5432111}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

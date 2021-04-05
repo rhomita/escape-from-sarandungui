@@ -33,11 +33,11 @@ public class Missile : Projectile
             {
                 if (attackable.TryGetComponent(out Unit unit))
                 {
-                    if (unit.Team.Number == _team.Number) continue;    
+                    if (unit.Team.Number == _owner.Team.Number) continue;    
                 }
                 int damage = GetDamage();
                 Vector3 direction = (collider.transform.position - transform.position).normalized + (Vector3.up * _damageUpForce);
-                attackable.TakeDamage(damage, direction * _damageForce);
+                attackable.TakeDamage(damage, direction * _damageForce, _owner);
                 ParticlesManager.Instance.Spawn("explosion", collider.transform.position);
                 SimplePool.Despawn(gameObject);    
             }

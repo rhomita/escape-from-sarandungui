@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
     public Rocket Rocket => _rocket;
     public bool IsActive => !_isPaused && !_finished;
 
-    private bool _isPaused;
+    private bool _isPaused = false;
     private bool _finished = false;
 
     void Start()

@@ -23,11 +23,11 @@ public class Bullet : Projectile
         {
             if (collider.TryGetComponent(out Unit unit))
             {
-                if (unit.Team.Number == _team.Number) return;
+                if (unit.Team.Number == _owner.Team.Number) return;
             }
             int damage = GetDamage();
             Vector3 direction = collider.transform.position - transform.position;
-            attackable.TakeDamage(damage, direction.normalized * _damageForce);
+            attackable.TakeDamage(damage, direction.normalized * _damageForce, _owner);
             SimplePool.Despawn(gameObject);
         }
     }

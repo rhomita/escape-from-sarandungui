@@ -17,14 +17,14 @@ public class DifficultyManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        
+
         _easyDifficulty = new Difficulty();
         _easyDifficulty.StartingMoney = 2000;
         _easyDifficulty.TimeToSpawnTank = 50f;
         _easyDifficulty.TimeToSpawnSoldier = 30f;
         _easyDifficulty.QuantitySoldiers = 3;
         _easyDifficulty.QuantityTanks = 1;
-            
+
         _normalDifficulty = new Difficulty();
         _normalDifficulty.StartingMoney = 1500;
         _normalDifficulty.TimeToSpawnTank = 40f;
@@ -54,12 +54,12 @@ public class DifficultyManager : MonoBehaviour
     {
         Difficulty = _easyDifficulty;
     }
-        
+
     public void SelectNormal()
     {
         Difficulty = _normalDifficulty;
     }
-        
+
     public void SelectHard()
     {
         Difficulty = _hardDifficulty;

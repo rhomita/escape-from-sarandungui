@@ -6,7 +6,7 @@ public abstract class Projectile : MonoBehaviour
 
     protected Rigidbody _rigidbody;
     protected float _livingTime;
-    protected Team _team;
+    protected Unit _owner;
     protected bool _initialized;
 
     protected int _minDamage;
@@ -40,7 +40,7 @@ public abstract class Projectile : MonoBehaviour
     public void Init(Unit owner)
     {
         if (_initialized) return;
-        _team = owner.Team;
+        _owner = owner;
         _initialized = true;
         OnInit();
     }

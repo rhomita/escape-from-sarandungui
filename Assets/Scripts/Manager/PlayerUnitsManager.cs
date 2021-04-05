@@ -14,15 +14,7 @@ public class PlayerUnitsManager : MonoBehaviour
     void Awake()
     {
         _units = new List<Unit>();
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        Instance = this;
     }
 
     public void Register(Unit unit)

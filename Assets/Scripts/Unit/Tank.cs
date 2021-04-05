@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Util;
 
 public class Tank : Unit
 {
@@ -13,6 +14,9 @@ public class Tank : Unit
     [SerializeField] private List<MeshRenderer> _cannonMeshes;
     [SerializeField] private MeshRenderer _tankMesh;
 
+    [Header("SFX")] 
+    [SerializeField] private SoundEffect _shootingSound;
+    
     private Animator _animator;
     
     private float _minAngleToMoveForward = 15f;
@@ -38,7 +42,7 @@ public class Tank : Unit
         _animator = transform.GetComponent<Animator>();
         _maxAttackRange = 40f;
         _angleToShot = 1.5f;
-        _maxHealth = 400f;
+        _maxHealth = 500f;
         _attackCooldownTime = 2f;
 
         base.Awake();
@@ -81,6 +85,8 @@ public class Tank : Unit
             ResetCannonRotation();
         }
 
+        if (!_isMovingToASelectedPosition) return;
+        
         if (shouldRotateBeforeMove)
         {
             RotateTowardsPosition(destination);
@@ -95,6 +101,7 @@ public class Tank : Unit
     protected override void OnShoot()
     {
         _animator.SetTrigger("Shoot");
+        _shootingSound.Play();
         Missile missile = SimplePool.Spawn(_missilePrefab, _cannonSpawnPoint.position, _cannonSpawnPoint.rotation).GetComponent<Missile>();
         missile.Init(this);
     }

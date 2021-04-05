@@ -31,7 +31,7 @@ public class Rocket : Attackable
 
     void Update()
     {
-        if (GameManager.Instance.IsActive) return;
+        if (!GameManager.Instance.IsActive) return;
         if (_progress >= 100)
         {
             GameManager.Instance.Finish(true);
@@ -85,7 +85,7 @@ public class Rocket : Attackable
         return false;
     }
 
-    public override void TakeDamage(int damage, Vector3 damageForce)
+    public override void TakeDamage(int damage, Vector3 damageForce, Attackable _attacker = null)
     {
         _progress -= damage / _damageProgressLossFactor;
         UpdateProgress();

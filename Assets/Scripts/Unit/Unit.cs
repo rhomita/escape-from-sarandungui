@@ -21,11 +21,13 @@ public abstract class Unit : Attackable
     protected float _maxHealth;
     protected float _minAttackRange;
     protected float _maxAttackRange;
+    protected float _stoppingDistance;
     protected float _angleToShot;
     protected float _speed;
     protected Team _team;
     protected float _timeToDespawnAfterKilled = 8f;
     protected float _attackCooldownTime = 1;
+    protected bool _isMovingToASelectedPosition = false;
 
     private float _attackCooldownTimer;
     
@@ -42,11 +44,16 @@ public abstract class Unit : Attackable
         _navMeshAgent = transform.GetComponent<NavMeshAgent>();
         _maxAttackRange = Mathf.Pow(_maxAttackRange, 2);
         _minAttackRange = Mathf.Pow(_minAttackRange, 2);
+        _stoppingDistance = Mathf.Pow(_stoppingDistance, 2);
     }
 
     void Start()
     {
         _speed = _navMeshAgent.speed;
+        OnTakeDamage += () =>
+        {
+            floatingHealthBar.SetHealth(_health);
+        };
     }
     
     protected virtual void OnEnable()
@@ -74,6 +81,12 @@ public abstract class Unit : Attackable
         {
             return;
         }
+
+        if (_isMovingToASelectedPosition)
+        {
+            float distanceLeft = Vector3.SqrMagnitude(_navMeshAgent.destination - transform.position);
+            _isMovingToASelectedPosition = distanceLeft > _stoppingDistance;
+        }
         
         OnUpdate();
     }
@@ -82,6 +95,7 @@ public abstract class Unit : Attackable
     {
         if (IsDead()) return;
 
+        _isMovingToASelectedPosition = true;
         _navMeshAgent.speed = _speed;
         RemoveTarget();
         SetDestination(position);
@@ -91,6 +105,7 @@ public abstract class Unit : Attackable
     {
         if (IsDead() || attackTarget.IsDead()) return;
 
+        _isMovingToASelectedPosition = false;
         RemoveTarget();
         _attackTarget = attackTarget;
         _attackTarget.OnKilled += OnTargetKilled;
@@ -143,7 +158,7 @@ public abstract class Unit : Attackable
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * _navMeshAgent.angularSpeed);
     }
     
-    public override void TakeDamage(int damage, Vector3 damageForce)
+    public override void TakeDamage(int damage, Vector3 damageForce, Attackable attacker = null)
     {
         if (IsDead()) return;
 
@@ -151,13 +166,21 @@ public abstract class Unit : Attackable
         damagePopup.Show(transform.position, damage);
         
         _health -= damage;
-        floatingHealthBar.SetHealth(_health);
+        OnTakeDamage?.Invoke();
         if (IsDead())
         {
             Kill(damageForce);
             return;
         }
-        OnTakeDamage?.Invoke();
+        
+        if (!_isMovingToASelectedPosition && _attackTarget == null)
+        {
+            float sqrDistanceToAttacker = Vector3.SqrMagnitude(attacker.transform.position - transform.position);
+            if (sqrDistanceToAttacker < _maxAttackRange)
+            {
+                SetAttackTarget(attacker);
+            }
+        }
     }
 
     public void Select()
