@@ -37,7 +37,7 @@ public abstract class Projectile : MonoBehaviour
         OnUpdate();
     }
     
-    public void Init(Unit owner)
+    public virtual void Init(Unit owner)
     {
         if (_initialized) return;
         _owner = owner;

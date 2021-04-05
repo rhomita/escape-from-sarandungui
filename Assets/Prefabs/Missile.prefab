@@ -144,6 +144,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6ea140836574671bcbf6498164ff866, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _topMesh: {fileID: 7573780163808693006}
+  _middleMesh: {fileID: 7573780163087134478}
+  _bottomMesh: {fileID: 7573780163422011055}
   _launchSoundEffect: {fileID: 80791420}
 --- !u!136 &9140879320384628210
 CapsuleCollider:
@@ -321,6 +324,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f78c945f2471c554ca244f0331463349, type: 3}
   m_PrefabInstance: {fileID: 9140879319492043307}
   m_PrefabAsset: {fileID: 0}
+--- !u!23 &7573780163422011055 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: f78c945f2471c554ca244f0331463349, type: 3}
+  m_PrefabInstance: {fileID: 9140879319492043307}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &9140879319694308234
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -387,6 +395,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f0bae3d7ef9682342a1234bff917ba6b, type: 3}
   m_PrefabInstance: {fileID: 9140879319694308234}
   m_PrefabAsset: {fileID: 0}
+--- !u!23 &7573780163087134478 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: f0bae3d7ef9682342a1234bff917ba6b, type: 3}
+  m_PrefabInstance: {fileID: 9140879319694308234}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &9140879320415541130
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -451,6 +464,11 @@ PrefabInstance:
 --- !u!4 &8741579453717049441 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6f30cafaf2d9d96428c0b0d52be33701, type: 3}
+  m_PrefabInstance: {fileID: 9140879320415541130}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &7573780163808693006 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 6f30cafaf2d9d96428c0b0d52be33701, type: 3}
   m_PrefabInstance: {fileID: 9140879320415541130}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &9140879320649242200

@@ -110,7 +110,7 @@ public class Soldier : Unit
     protected override void Kill(Vector3 damageForce)
     {
         base.Kill(damageForce);
-        if (damageForce.magnitude > 50f)
+        if (damageForce.magnitude > 70f)
         {
             _screamSound.Play();
         }

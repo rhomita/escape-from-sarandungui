@@ -2,8 +2,11 @@ using UnityEngine;
 
 public class Bullet : Projectile
 {
+    [SerializeField] private MeshRenderer _renderer;
+
     private float _speed = 13f;
-    private float _damageForce = 85f;
+    private float _damageForce = 70f;
+    private float _damageUpForce = 10f;
     
     protected override void OnInit()
     {
@@ -12,6 +15,12 @@ public class Bullet : Projectile
         _rigidbody.AddForce(transform.forward * _speed, ForceMode.Impulse);
     }
 
+    public override void Init(Unit owner)
+    {
+        base.Init(owner);
+        _renderer.material = _owner.Team.ProjectileMaterial;
+    }
+    
     protected override void OnUpdate()
     {
     }
@@ -26,8 +35,9 @@ public class Bullet : Projectile
                 if (unit.Team.Number == _owner.Team.Number) return;
             }
             int damage = GetDamage();
-            Vector3 direction = collider.transform.position - transform.position;
-            attackable.TakeDamage(damage, direction.normalized * _damageForce, _owner);
+            Vector3 damageForce = (collider.transform.position - transform.position).normalized * _damageForce +
+                                  Vector3.up * _damageUpForce;
+            attackable.TakeDamage(damage, damageForce, _owner);
             ParticlesManager.Instance.Spawn("blood", collider.transform.position);
             SimplePool.Despawn(gameObject);
         }

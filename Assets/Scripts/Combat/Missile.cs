@@ -4,13 +4,17 @@ using Util;
 
 public class Missile : Projectile
 {
+    [Header("Mesh")] 
+    [SerializeField] private MeshRenderer _topMesh;
+    [SerializeField] private MeshRenderer _middleMesh;
+    [SerializeField] private MeshRenderer _bottomMesh;
     [Header("SFX")] 
     [SerializeField] private SoundEffect _launchSoundEffect;
 
     private float _minSpeed = 2.2f;
     private float _maxSpeed = 4f;
-    private float _damageForce = 15f;
-    private float _damageUpForce = 5f;
+    private float _damageForce = 60f;
+    private float _damageUpForce = 120f;
     private float _explosionRadius = 2f;
 
 
@@ -20,6 +24,24 @@ public class Missile : Projectile
         _maxDamage = 40;
         _launchSoundEffect.Play();
     }
+    
+    public override void Init(Unit owner)
+    {
+        base.Init(owner);
+        Team team = _owner.Team;
+        Material[] materials = _topMesh.materials;
+        materials[0] = team.Material;
+        _topMesh.materials = materials;
+        
+        materials = _middleMesh.materials;
+        materials[1] = team.Material;
+        _middleMesh.materials = materials;
+        
+        materials = _bottomMesh.materials;
+        materials[2] = team.Material;
+        _bottomMesh.materials = materials;
+    }
+
 
     protected override void OnUpdate()
     {
@@ -46,9 +68,9 @@ public class Missile : Projectile
                 }
 
                 foundOneValidAttackableTarget = true;
-                Vector3 direction = (collider.transform.position - transform.position).normalized +
-                                    (Vector3.up * _damageUpForce);
-                attackable.TakeDamage(damage, direction * _damageForce, _owner);
+                Vector3 damageForce = (collider.transform.position - transform.position).normalized * _damageForce +
+                                      Vector3.up * _damageUpForce;
+                attackable.TakeDamage(damage, damageForce, _owner);
             }
         }
 

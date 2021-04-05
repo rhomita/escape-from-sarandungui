@@ -18,6 +18,7 @@ public class Tank : Unit
     [SerializeField] private SoundEffect _shootingSound;
     [SerializeField] private SoundEffect _movingSound;
     [SerializeField] private SoundEffect _rotateCannonSound;
+    [SerializeField] private SoundEffect _impactSound;
 
     [Header("Particles")] [SerializeField] private GameObject _fireParticles;
     
@@ -50,6 +51,7 @@ public class Tank : Unit
     protected override void Kill(Vector3 damageForce)
     {
         base.Kill(damageForce);
+        ParticlesManager.Instance.Spawn("explosion", transform.position);
         _fireParticles.SetActive(true);
     }
     
@@ -60,6 +62,8 @@ public class Tank : Unit
         _angleToShot = 1.5f;
         _maxHealth = 500f;
         _attackCooldownTime = 2f;
+        
+        OnTakeDamage += () => _impactSound.Play();
 
         base.Awake();
     }
