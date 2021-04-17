@@ -42,7 +42,7 @@ public class PlayerUnitSpawner : MonoBehaviour
         bool success = PlayerMoneyManager.Instance.Remove(_tankCost);
         if (!success)
         {
-            //UIManager.Instance.ShowMessagePopup(NOT_ENOUGH_MONEY_STRING);
+            UIManager.Instance.ShowMessagePopup(NOT_ENOUGH_MONEY_STRING);
             return;
         }
         Unit unit = _unitSpawner.SpawnTank(_team, _tankSpawnPoint.position);
@@ -55,7 +55,7 @@ public class PlayerUnitSpawner : MonoBehaviour
         bool success = PlayerMoneyManager.Instance.Remove(_soldierCost);
         if (!success)
         {
-            // UIManager.Instance.ShowMessagePopup(NOT_ENOUGH_MONEY_STRING);
+            UIManager.Instance.ShowMessagePopup(NOT_ENOUGH_MONEY_STRING);
             return;
         }
         Unit unit = _unitSpawner.SpawnSoldier(_team, _soldierSpawnPoint.position);
@@ -68,7 +68,7 @@ public class PlayerUnitSpawner : MonoBehaviour
         bool success = PlayerMoneyManager.Instance.Remove(_workerCost);
         if (!success)
         {
-            //UIManager.Instance.ShowMessagePopup(NOT_ENOUGH_MONEY_STRING);
+            UIManager.Instance.ShowMessagePopup(NOT_ENOUGH_MONEY_STRING);
             return;
         }
         PlayerMoneyManager.Instance.AddWorker();
