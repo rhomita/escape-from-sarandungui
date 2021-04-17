@@ -31,6 +31,10 @@ public class PlayerUnitSpawner : MonoBehaviour
         {
             SpawnTank();
         }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            SpawnWorker();
+        }
     }
     
     public virtual void SpawnTank()
