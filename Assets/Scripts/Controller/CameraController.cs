@@ -1,36 +1,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-    
+
 public class CameraController : MonoBehaviour
 {
     [SerializeField] private RectTransform _selectionPanel;
-    
+
     private float _raycastDistance = 300;
     private Camera _cam;
-    private HashSet<Unit> _selectedUnits;
+    private HashSet<Unit> _selectedUnits { get; } = new HashSet<Unit>();
+    private HashSet<Vector3> _points { get; } = new HashSet<Vector3>();
     public Vector3 originPoint = new Vector3(0, 0, 0);
-    
-    void Start()
+
+    private void Start()
     {
-        _selectedUnits = new HashSet<Unit>();
         _selectionPanel.gameObject.SetActive(false);
         _cam = transform.GetComponent<Camera>();
     }
 
-    void Update()
+    private void Update()
     {
         // Selection
         if (Input.GetMouseButtonDown(0))
         {
             StartClick();
         }
-        
+
         if (Input.GetMouseButton(0))
         {
             KeepPressedClick();
         }
-        
+
         if (Input.GetMouseButtonUp(0))
         {
             ReleaseClick();
@@ -40,9 +40,14 @@ public class CameraController : MonoBehaviour
         {
             OnRightClick();
         }
+
+        foreach (Vector3 point in _points)
+        {
+            Debug.DrawLine(point, point + Vector3.up, Color.red);
+        }
     }
 
-    void StartClick()
+    private void StartClick()
     {
         _selectionPanel.sizeDelta = Vector2.zero;
         _selectionPanel.gameObject.SetActive(true);
@@ -55,18 +60,16 @@ public class CameraController : MonoBehaviour
         _selectedUnits.Clear();
     }
 
-    void KeepPressedClick()
+    private void KeepPressedClick()
     {
         float xSize = Input.mousePosition.x - originPoint.x;
         float ySize = originPoint.y - Input.mousePosition.y;
-        if(xSize < 0f)
+        if (xSize < 0f)
         {
-
             _selectionPanel.position = new Vector3(Input.mousePosition.x, _selectionPanel.position.y, _selectionPanel.position.z);
         }
         if (ySize < 0f)
         {
-
             _selectionPanel.position = new Vector3(_selectionPanel.position.x, Input.mousePosition.y, _selectionPanel.position.z);
         }
         xSize = Mathf.Abs(xSize);
@@ -74,14 +77,14 @@ public class CameraController : MonoBehaviour
         _selectionPanel.sizeDelta = new Vector2(xSize, ySize);
     }
 
-    void ReleaseClick()
+    private void ReleaseClick()
     {
         KeepPressedClick();
         _selectionPanel.gameObject.SetActive(false);
         Vector3 mouse = Input.mousePosition;
         Vector3 startPosition = _selectionPanel.position;
         Vector3 endPosition = mouse;
-        
+
         if (_selectionPanel.position.x == mouse.x)
         {
             endPosition = new Vector3(originPoint.x, mouse.y, mouse.z);
@@ -90,9 +93,9 @@ public class CameraController : MonoBehaviour
         {
             endPosition = new Vector3(mouse.x, originPoint.y, mouse.z);
         }
-        if(_selectionPanel.position == mouse)
+        if (_selectionPanel.position == mouse)
         {
-             endPosition = originPoint;
+            endPosition = originPoint;
         }
 
         foreach (Unit unit in PlayerUnitsManager.Instance.Units)
@@ -106,7 +109,7 @@ public class CameraController : MonoBehaviour
                 _selectedUnits.Add(unit);
             }
         }
-        
+
         Ray ray = _cam.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit _hit, _raycastDistance))
         {
@@ -118,19 +121,19 @@ public class CameraController : MonoBehaviour
                 }
             }
         }
-        
+
         foreach (Unit unit in _selectedUnits)
         {
             unit.Select();
         }
     }
 
-    void OnRightClick()
+    private void OnRightClick()
     {
         if (_selectedUnits.Count == 0) return;
 
         Ray ray = _cam.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast (ray, out RaycastHit _hit, _raycastDistance))
+        if (Physics.Raycast(ray, out RaycastHit _hit, _raycastDistance))
         {
             if (_hit.collider.TryGetComponent(out Unit _unit))
             {
@@ -143,15 +146,49 @@ public class CameraController : MonoBehaviour
                 }
                 return;
             }
-                
-                
+
             Vector3 endPosition = _hit.point;
             bool blocked = NavMesh.Raycast(transform.position, endPosition, out NavMeshHit hit, NavMesh.AllAreas);
             if (blocked) return; // Cannot move there
+
+            _points.Clear();
+            Vector3[] points = GetUnitTrainingPoints(endPosition, _selectedUnits.Count);
+
+            int index = 0;
             foreach (Unit unit in _selectedUnits)
             {
-                unit.MoveTo(endPosition);
+                unit.MoveTo(points[index]);
+                _points.Add(points[index]);
+                index++;
             }
-        }    
+        }
+    }
+
+    private static Vector3[] GetUnitTrainingPoints(Vector3 mouse_point, int size)
+    {
+        int LINE_X = Mathf.Min(4, size);
+        float UNIT_SIZE = 3f;
+        float W = UNIT_SIZE * LINE_X;
+
+        float x = mouse_point.x - (W / 2f);
+        float z = mouse_point.z;
+
+        Vector3[] points = new Vector3[size];
+
+        for (int i = 0; i < points.Length; i++)
+        {
+            points[i] = mouse_point;
+            points[i].x = x;
+            points[i].z = z;
+            x += UNIT_SIZE;
+
+            if (LINE_X == (i % LINE_X) + 1)
+            {
+                x = mouse_point.x - (W / 2f);
+                z += UNIT_SIZE;
+            }
+        }
+
+        return points;
     }
 }
