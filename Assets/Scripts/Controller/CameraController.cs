@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
 
 public class CameraController : MonoBehaviour
 {
@@ -20,30 +21,61 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
-        // Selection
-        if (Input.GetMouseButtonDown(0))
+        if (GameManager.Instance.IsAndroid)
         {
-            StartClick();
-        }
+            if (Input.touchCount >= 2)
+            {
+                return;
+            }
 
-        if (Input.GetMouseButton(0))
-        {
-            KeepPressedClick();
-        }
+            if (GameManager.Instance.AndroidManager.SelectMode == SelectMode.SELECT)
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    StartClick();
+                }
 
-        if (Input.GetMouseButtonUp(0))
-        {
-            ReleaseClick();
-        }
+                if (Input.GetMouseButton(0))
+                {
+                    KeepPressedClick();
+                }
 
-        if (Input.GetMouseButtonDown(1))
-        {
-            OnRightClick();
+                if (Input.GetMouseButtonUp(0))
+                {
+                    ReleaseClick();
+                }
+            }
+            else
+            {
+                ReleaseClick();
+                if (Input.GetMouseButtonDown(0))
+                {
+                    OnRightClick();
+                }
+            }
         }
-
-        foreach (Vector3 point in _points)
+        else
         {
-            Debug.DrawLine(point, point + Vector3.up, Color.red);
+            // Selection
+            if (Input.GetMouseButtonDown(0))
+            {
+                StartClick();
+            }
+
+            if (Input.GetMouseButton(0))
+            {
+                KeepPressedClick();
+            }
+
+            if (Input.GetMouseButtonUp(0))
+            {
+                ReleaseClick();
+            }
+
+            if (Input.GetMouseButtonDown(1))
+            {
+                OnRightClick();
+            }
         }
     }
 
@@ -53,10 +85,17 @@ public class CameraController : MonoBehaviour
         _selectionPanel.gameObject.SetActive(true);
         _selectionPanel.position = Input.mousePosition;
         originPoint = Input.mousePosition;
+
+        if (IsPointerOverGameObject())
+        {
+            return;
+        }
+
         foreach (Unit unit in _selectedUnits)
         {
             unit.DeSelect();
         }
+
         _selectedUnits.Clear();
     }
 
@@ -66,12 +105,16 @@ public class CameraController : MonoBehaviour
         float ySize = originPoint.y - Input.mousePosition.y;
         if (xSize < 0f)
         {
-            _selectionPanel.position = new Vector3(Input.mousePosition.x, _selectionPanel.position.y, _selectionPanel.position.z);
+            _selectionPanel.position = new Vector3(Input.mousePosition.x, _selectionPanel.position.y,
+                _selectionPanel.position.z);
         }
+
         if (ySize < 0f)
         {
-            _selectionPanel.position = new Vector3(_selectionPanel.position.x, Input.mousePosition.y, _selectionPanel.position.z);
+            _selectionPanel.position = new Vector3(_selectionPanel.position.x, Input.mousePosition.y,
+                _selectionPanel.position.z);
         }
+
         xSize = Mathf.Abs(xSize);
         ySize = Mathf.Abs(ySize);
         _selectionPanel.sizeDelta = new Vector2(xSize, ySize);
@@ -89,10 +132,12 @@ public class CameraController : MonoBehaviour
         {
             endPosition = new Vector3(originPoint.x, mouse.y, mouse.z);
         }
+
         if (_selectionPanel.position.y == mouse.y)
         {
             endPosition = new Vector3(mouse.x, originPoint.y, mouse.z);
         }
+
         if (_selectionPanel.position == mouse)
         {
             endPosition = originPoint;
@@ -144,6 +189,7 @@ public class CameraController : MonoBehaviour
                         unit.SetAttackTarget(_unit);
                     }
                 }
+
                 return;
             }
 
@@ -190,5 +236,16 @@ public class CameraController : MonoBehaviour
         }
 
         return points;
+    }
+
+    public static bool IsPointerOverGameObject()
+    {
+        if (EventSystem.current.IsPointerOverGameObject()) return true;
+
+        if (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Began)
+        {
+            return EventSystem.current.IsPointerOverGameObject(Input.touches[0].fingerId);
+        }
+        return false;
     }
 }

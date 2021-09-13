@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Canvas _canvas;
     [SerializeField] private Rocket _rocket;
     [SerializeField] private Texture2D _cursor;
-
+    
     [Header("Pause")]
     [SerializeField] private GameObject _pauseCanvas;
     
@@ -32,19 +32,28 @@ public class GameManager : MonoBehaviour
 
     private Vector3 _endCameraPosition = new Vector3(0, 30, -25);
 
+
+    public AndroidManager AndroidManager => _androidManager;
+    public bool IsAndroid => _isAndroid;
     public Camera Camera => _camera;
     public Canvas Canvas => _canvas;
     public Rocket Rocket => _rocket;
     public bool IsActive => !_isPaused && !_finished;
 
+    private AndroidManager _androidManager;
+
     private bool _isPaused = false;
     private bool _finished = false;
+    private bool _isAndroid = false;
 
     void Start()
     {
         _finishedCanvas.SetActive(false);
         Cursor.SetCursor(_cursor, Vector2.zero, CursorMode.Auto);
         TogglePause(false);
+
+        _androidManager = transform.GetComponent<AndroidManager>();
+        _isAndroid = Application.platform == RuntimePlatform.Android;
     }
 
     private void Update()
